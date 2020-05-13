@@ -20,7 +20,7 @@ else:
 
 #Choix de la position initiale du cadre selon y:
 if limite_up_y - size_window_y + 1 == 0:
-    posY = size_window_y // 2 + size_window_y % 2-1
+    posY = size_window_y // 2 + size_window_y % 2
 elif limite_up_y - size_window_y + 1 < 0:
     print("!!!! Le cadre est trop grand pour la taille de la vidéo originale !!!!")
 else:
@@ -104,6 +104,7 @@ zoom_en_cours_Auto = False
 zoom_en_cours_manuel = False
 
 
+zoom = False
 
 
 
