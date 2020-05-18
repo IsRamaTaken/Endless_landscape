@@ -136,5 +136,7 @@ modes = pygame.display.list_modes()
 accroche_x = (modes[0][0] - size_x) / 2
 accroche_y = (modes[0][1] - size_y) / 2
 
+update_cadre = pygame.Rect(accroche_x, accroche_y, size_x, size_y)
+
 
 """   Fin de l'initialisation   """
