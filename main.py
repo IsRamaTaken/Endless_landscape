@@ -131,10 +131,10 @@ while running:
     frame = pygame.transform.flip(frame, True, False)
     if fullscreen:
         screen.blit(frame, (accroche_x, accroche_y))
+        pygame.display.update(update_cadre)
     else:
         screen.blit(frame, (0, 0))
-
-    pygame.display.update()
+        pygame.display.update()
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
