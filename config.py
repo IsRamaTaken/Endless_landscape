@@ -17,7 +17,8 @@ limitation_nombre_de_frame = config.getint("input_video", "limitation_nombre_de_
 path = config.get("input_video", "video")
 
 #Pour le cadre:
-manuel_auto = config.getint("cadre", "manuel_auto")
+choix_cadre = config.getboolean("cadre", "choix_cadre")
+manuel_auto = 0
 type_deplacement_cadre = manuel_auto
 size_x = config.getint("cadre", "size_x")
 size_y = config.getint("cadre", "size_y")
@@ -38,12 +39,14 @@ temps_arret_x = config.getint("cadre", "temps_arret_x")
 temps_arret_y = config.getint("cadre", "temps_arret_y")
 
 #ZOOM
+choix_zoom_ou_non = config.getboolean("ZOOM", "zoom_ou_non")
 type_zoom = manuel_auto
 vzoom = config.getfloat("ZOOM", "vitesse de zoom")
 attente_min = config.getfloat("ZOOM", "attente_min")
 attente_max = config.getfloat("ZOOM", "attente_max")
 
 #Pour la tete de lecture:
+choix_t = config.getboolean("tete_de_lecture", "choix_t")
 type_deplacement_tete = manuel_auto
 probabilite_changement_sens_t = config.getfloat("tete_de_lecture", "probabilite_changement_sens_t")
 probabilite_changement_selon_direction_t = config.getfloat("tete_de_lecture", "probabilite_changement_selon_direction_t")

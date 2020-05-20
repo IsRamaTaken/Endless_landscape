@@ -3,7 +3,7 @@ from random import randint
 from preparation_video import *
 
 #Position initiale de la tete de lecture
-lecture = randint(0, nombre_de_frame)
+lecture = randint(0, nombre_de_frame-1)
 
 #Initialisation de la taille de la fenêtre
 size_window_x = size_x
@@ -20,11 +20,12 @@ else:
 
 #Choix de la position initiale du cadre selon y:
 if limite_up_y - size_window_y + 1 == 0:
-    posY = size_window_y // 2 + size_window_y % 2
+    posY = size_window_y // 2 + size_window_y % 2-1
 elif limite_up_y - size_window_y + 1 < 0:
     print("!!!! Le cadre est trop grand pour la taille de la vidéo originale !!!!")
 else:
     posY = randint(size_window_y//2 + size_window_y%2 -1 , limite_up_y - size_window_y//2)
+
 
 
 #Temps que le cadre va rester sur les bords la premiere fois qu'il les touche:
@@ -104,7 +105,6 @@ zoom_en_cours_Auto = False
 zoom_en_cours_manuel = False
 
 
-zoom = False
 
 
 
@@ -135,8 +135,6 @@ arret_y = False
 modes = pygame.display.list_modes()
 accroche_x = (modes[0][0] - size_x) / 2
 accroche_y = (modes[0][1] - size_y) / 2
-
-update_cadre = pygame.Rect(accroche_x, accroche_y, size_x, size_y)
 
 
 """   Fin de l'initialisation   """

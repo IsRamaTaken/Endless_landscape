@@ -11,6 +11,8 @@ def signe(z):
     else:
         return(-1)
 
+
+
 def zoomPossible(zinit,zf,vx,vy,vzoom,posX,posY,size_x,size_y,limit_up_x,limit_up_y):
 
     if zf>=zinit:
@@ -22,7 +24,8 @@ def zoomPossible(zinit,zf,vx,vy,vzoom,posX,posY,size_x,size_y,limit_up_x,limit_u
         newSizeY = int(size_y / zf)
         deltaX=duree*vx
         deltaY=duree*vy
-        return(int(posX-(newSizeX/2)-deltaX)>=0 and int(posX+(newSizeX/2)+deltaX)<=limit_up_x and int(posY-(newSizeY/2)-deltaY)>=0 and int(posY+(newSizeY/2)+deltaY)<=limit_up_y)
+
+        return int(posX-(newSizeX/2)-deltaX)>=0 and int(posX+(newSizeX/2)+deltaX)<=limit_up_x and int(posY-(newSizeY/2)-deltaY)>=0 and int(posY+(newSizeY/2)+deltaY)<=limit_up_y
 
 
 def zoom_automatique(Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,attente_min,attente_max):
@@ -66,10 +69,10 @@ def zoom_automatique(Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, l
             zoom_en_cours_auto=True
 
             temps_debut_zoom=time.time()
-    return(temps_debut_zoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,Zt)
+    return temps_debut_zoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,Zt
 
 
-def Zoom_Manuel( Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoomAuto,zinit,zf,zoom_en_cours_manuel,indice_zoom,indiceZoomDefault, pygame, input_map):
+def Zoom_Manuel( Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoomManuel,zinit,zf,zoom_en_cours_manuel,indice_zoom, indiceZoomDefault , keys, input_map):
 
     if zoom_en_cours_manuel :
         t = time.time() - temps_debut_zoom
@@ -78,20 +81,21 @@ def Zoom_Manuel( Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit
             Zt=zf
             zinit=zf
             zoom_en_cours_manuel=False
-    """
+
     else:
-        for event in pygame.event.get():
-            if event.type == pygame.KEYDOWN:
-                for i in range(10):
-                    if event.key == input_map["zoom_" + str(i)] and zoomPossible(zinit, listZoomAuto[i], vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y):
-                        zf = listZoomAuto[i]
-                        temps_debut_zoom = time.time()
-                        zoom_en_cours_manuel = True
-                        if i == 0:
-                            indice_zoom = indiceZoomDefault
-                        else:
-                            indice_zoom=i
-                if event.key == input_map["move_up"]:
-                    print("je suis pas dans le bon endroit mais tia compris")"""
-    return(Zt,indice_zoom,temps_debut_zoom,zinit,zf,zoom_en_cours_manuel)
+        for i in range(10):
+            if keys[input_map["zoom_" + str(i)]] and zoomPossible(zinit, listZoomManuel[i], vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y):
+
+                zoom_en_cours_manuel = True
+                if i == 0:
+
+                    indice_zoom = indiceZoomDefault
+                else:
+                    indice_zoom=i
+
+                zf = listZoomManuel[i]
+                temps_debut_zoom = time.time()
+
+
+    return Zt,indice_zoom,temps_debut_zoom,zinit,zf,zoom_en_cours_manuel
 

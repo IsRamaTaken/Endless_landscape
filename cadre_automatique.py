@@ -27,7 +27,7 @@ def deplacement_automatique_x_y(temps, pos, pos_reel, sens_deplacement, directio
         pos_reel += sens_deplacement * vitesse * duree
         pos = int(pos_reel)
         temps = time.time()
-        bord_atteint = pos== size//2 + size%2 -1 or pos== limite_up - size//2
+        bord_atteint = pos<= size//2 + size%2 -1 or pos>= limite_up - size//2
     else:
         if bord_atteint_debut:
             debut_bord = time.time()
