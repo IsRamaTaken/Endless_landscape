@@ -1,5 +1,5 @@
 import numpy as np
-from deplacement_tete_de_lecture import deplacement_t
+from deplacement_tete_de_lecture import deplacement_t, changement_proba
 from cadre_manuel import deplacement_manuel
 from cadre_automatique import deplacement_automatique_x_y
 
@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 
 while running:
 
-    clock.tick(2000000)
+    clock.tick(framerate)
 
 
     for event in pygame.event.get():
@@ -138,18 +138,33 @@ while running:
                     temps_min_y, temps_max_y, temps_min_changement_y, probabilite_changement_sens_y,
                     probabilite_changement_selon_direction_y, temps_y_changement)
 
+    if choix_t:
+        lecture, sens_lecture, direction_lecture, temps_lecture = deplacement_t(
+                temps_lecture, lecture, direction_lecture, nombre_de_frame, sens_lecture, temps_min_changement_t, probabilite_changement_selon_direction_t, liste_proba, indice_proba)
+    
+        if keys[input_map["changement_lecture"]]:
+            sens_lecture=-sens_lecture
+        
+        indice_proba, temps_changement_proba = changement_proba(
+                temps_changement_proba, temps_entre_changement_proba, indice_proba, liste_proba)
 
 
-    if keys[input_map["changement_lecture"]]:
-        sens_lecture=-sens_lecture
-
-
+        lecture += sens_lecture
+        if lecture <= 0:
+            lecture = 0
+            sens_lecture = 1
+            direction_lecture = 1
+        elif lecture >= nombre_de_frame - 1:
+            lecture = nombre_de_frame - 1
+            sens_lecture = -1
+            direction_lecture = -1
+        
 
     for i in range(10):
         if keys[input_map["zoom_" + str(i)]]:
             print(zoomPossible(zinit, listZoomManuel[i], vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y))
 
-
+    
 
 
 
@@ -188,7 +203,4 @@ while running:
 
 cv2.destroyAllWindows()
 pygame.quit()
-temps_fin_calcul_fps_final = time.time()
-fps_moy = compteur_de_frame / (temps_fin_calcul_fps_final - temps_debut_calcul_fps_final)
-print("Nombre moyen d'images par seconde : %d" % fps_moy)
 print(clock.get_fps())

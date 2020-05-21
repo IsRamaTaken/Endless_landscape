@@ -4,6 +4,8 @@ from preparation_video import *
 
 #Position initiale de la tete de lecture
 lecture = randint(0, nombre_de_frame-1)
+indice_proba = 0
+
 
 #Initialisation de la taille de la fenêtre
 size_window_x = size_x
@@ -86,7 +88,6 @@ deplacement_automatique = True
 compteur_de_frame = 0
 
 #Initialisation des temps:
-temps_debut_calcul_fps_final = time.time()
 temps_debut_calcul_fps_continu = time.time()
 temps_lecture = time.time()         #permet de calculer la durée qui s'est écoulé entre de changement de sens de lecture
 temps_x_changement=time.time()      #permet de calculer la durée qui s'est écoulé entre de changement de direction de déplacement du cadre selon x
@@ -97,22 +98,16 @@ debut_bord_x = time.time()          #Permet de calculer la durée que reste le c
 debut_bord_y = time.time()          #Permet de calculer la durée que reste le cadre ur le bord de l'image en y
 temps_changement_zoom=time.time()   #permet de calculer la durée qui s'est écoulé avant le zoom précédent
 temps_debut_zoom=0
+temps_changement_proba = time.time()
 
 
 #Initialisation Zoom:
 
 zoom_en_cours_Auto = False
 zoom_en_cours_manuel = False
-
-
-
-
-
 zmax = 2
 zmin = max([size_x/limite_up_x, size_y/limite_up_y])
 listZoomAuto = [zmin+k*(zmax-zmin)/9 for k in range(10)]
-
-
 indiceZoomDefault=0
 while listZoomAuto[indiceZoomDefault] < 1:        #placer le zoom 1 dans la liste
     indiceZoomDefault += 1
@@ -120,7 +115,6 @@ indiceZoomDefault -= 1
 listZoomAuto[indiceZoomDefault] = 1
 indice_zoom = indiceZoomDefault
 listZoomManuel = [1]+listZoomAuto[:indiceZoomDefault]+listZoomAuto[indiceZoomDefault+1:]
-
 zinit = 1
 zf = 1
 Zt = zinit

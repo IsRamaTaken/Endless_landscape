@@ -46,6 +46,11 @@ attente_min = config.getfloat("ZOOM", "attente_min")
 attente_max = config.getfloat("ZOOM", "attente_max")
 
 #Pour la tete de lecture:
+liste_proba = config.get("tete_de_lecture", "liste_proba")
+liste_proba = liste_proba.split()
+for i in range(len(liste_proba)):
+    liste_proba[i] = float(liste_proba[i])
+temps_entre_changement_proba = config.getfloat("tete_de_lecture", "temps_entre_changement_proba")
 choix_t = config.getboolean("tete_de_lecture", "choix_t")
 type_deplacement_tete = manuel_auto
 probabilite_changement_sens_t = config.getfloat("tete_de_lecture", "probabilite_changement_sens_t")
