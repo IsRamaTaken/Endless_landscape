@@ -53,7 +53,6 @@ for i in range(len(liste_proba)):
 temps_entre_changement_proba = config.getfloat("tete_de_lecture", "temps_entre_changement_proba")
 choix_t = config.getboolean("tete_de_lecture", "choix_t")
 type_deplacement_tete = manuel_auto
-probabilite_changement_sens_t = config.getfloat("tete_de_lecture", "probabilite_changement_sens_t")
 probabilite_changement_selon_direction_t = config.getfloat("tete_de_lecture", "probabilite_changement_selon_direction_t")
 temps_min_changement_t = config.getfloat("tete_de_lecture", "temps_min_changement_t")
 
