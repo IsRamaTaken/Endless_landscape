@@ -175,6 +175,10 @@ while running:
     img = cv2.resize(img, (size_x, size_y))
 
     compteur_de_frame += 1
+    
+    """On ajoute l'image a la vidéo enregistrée si on a choisit de le faire"""
+    if enregistrement:
+        video_output.write(img)
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     frame = np.rot90(img)
@@ -192,9 +196,7 @@ while running:
 
 
 
-    """On ajoute l'image a la vidéo enregistrée si on a choisit de le faire"""
-    if enregistrement:
-        video_output.write(img)
+
 
     """Si on affiche les images trop vite par rapport au framerate voulu, on fait une pause"""
     temps_fin_calcul_fps_continu = time.time()
