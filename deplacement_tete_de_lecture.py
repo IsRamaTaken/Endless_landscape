@@ -32,7 +32,6 @@ def changement_proba(temps_changement_proba,temps_entre_changement_proba, indice
     if time.time() - temps_changement_proba > temps_entre_changement_proba:
         temps_changement_proba = time.time()
         indice_proba = randint(0,len(liste_proba)-1)
-        print(liste_proba[indice_proba])
     return indice_proba, temps_changement_proba
 
 
