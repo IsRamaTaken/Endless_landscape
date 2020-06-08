@@ -1,4 +1,4 @@
-from tkinter import Tk, Label,StringVar,Entry,Button,font
+from tkinter import Tk, Label,StringVar,Entry,Button,font,Checkbutton, BooleanVar
 
 
 
@@ -6,6 +6,24 @@ def quit():
     global formulaire
     global Validation
     Validation.grid(row=0,column=0,rowspan=7,columnspan=2)
+
+
+class FormulaireSelect:
+
+    def __init__(self,texte,position,fenetre,action,selectDefault):
+        self.position=position
+        self.texte=texte
+        self.fenetre=fenetre
+        self.action=action
+        self.selectDefault = selectDefault
+        is_checked=BooleanVar(self.fenetre,str(selectDefault))
+        self.descip=Label(self.fenetre,text=self.texte)
+        self.select=Checkbutton(self.fenetre,variable=is_checked,command=self.action)
+
+
+    def postionner(self):
+        self.select.grid(row=self.position,column=2)
+        self.descip.grid(row=self.position,column=3)
 
 class TitrePartie:
     def __init__(self,texte,position,fenetre):
