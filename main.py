@@ -44,7 +44,6 @@ while running:
     # condition de fermeture
 
     if keys[input_map["mode_automatique"]]:
-        print("auto")
         manuel_auto = 0
         type_deplacement_cadre = 0
         type_deplacement_tete = 0
@@ -53,8 +52,6 @@ while running:
 
 
     elif keys[input_map["mode_manuel"]]:
-        print('manuel')
-        print('after', posX, posY)
         manuel_auto = 1
         type_deplacement_cadre = 1
         type_deplacement_tete = 1
@@ -69,11 +66,6 @@ while running:
     if keys[input_map["stop_cadre_y"]]:
         sens_deplacement_y = 0
         arret_y = True
-
-    if keys[input_map["changement_lecture"]]:
-        if sens_lecture == 0:
-            sens_lecture = -1
-        sens_lecture = -sens_lecture
 
 
     #ZOOM
@@ -139,16 +131,16 @@ while running:
                     probabilite_changement_selon_direction_y, temps_y_changement)
 
     if choix_t:
-        lecture, sens_lecture, direction_lecture, temps_lecture = deplacement_t(
-                temps_lecture, lecture, direction_lecture, nombre_de_frame, sens_lecture, temps_min_changement_t, probabilite_changement_selon_direction_t, liste_proba, indice_proba)
-    
-        if keys[input_map["changement_lecture"]]:
-            sens_lecture=-sens_lecture
-        
-        indice_proba, temps_changement_proba = changement_proba(
+        if not type_deplacement_tete:
+            lecture, sens_lecture, direction_lecture, temps_lecture = deplacement_t(
+                    temps_lecture, lecture, direction_lecture, nombre_de_frame, sens_lecture, temps_min_changement_t, probabilite_changement_selon_direction_t, liste_proba, indice_proba)
+            indice_proba, temps_changement_proba = changement_proba(
                 temps_changement_proba, temps_entre_changement_proba, indice_proba, liste_proba)
 
 
+        if keys[input_map["changement_lecture"]]:
+            sens_lecture=-sens_lecture
+        
         lecture += sens_lecture
         if lecture <= 0:
             lecture = 0
