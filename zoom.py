@@ -70,7 +70,7 @@ def zoom_automatique(sens_deplacement_x, direction_deplacement_x,sens_deplacemen
             elif directionZoom==-1:
 
                 if tirage(2/3):
-                    if Zpred and indice_zoom>0 :
+                    if Zpred  :
                         indice_zoom-=1
                     else:
                         sens_deplacement_x, direction_deplacement_x, sens_deplacement_y, direction_deplacement_y = \
@@ -78,7 +78,7 @@ def zoom_automatique(sens_deplacement_x, direction_deplacement_x,sens_deplacemen
                                                       direction_deplacement_y, limit_up_x, limit_up_y, posX, posY)       # on veut zoomer mais ce n'est pas possible donc on se deplace vers le centre
                         indice_zoom=+1
 
-                elif Zsuivant:
+                elif Zsuivant and indice_zoom<9:
                         indice_zoom+=1
 
 

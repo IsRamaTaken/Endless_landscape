@@ -105,7 +105,6 @@ temps_changement_proba = time.time()
 
 zoom_en_cours_Auto = False
 zoom_en_cours_manuel = False
-zmax = 2
 zmin = max([size_x/limite_up_x, size_y/limite_up_y])
 listZoomAuto = [zmin+k*(zmax-zmin)/9 for k in range(10)]
 indiceZoomDefault=0

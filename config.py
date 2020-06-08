@@ -44,6 +44,7 @@ type_zoom = manuel_auto
 vzoom = config.getfloat("ZOOM", "vitesse de zoom")
 attente_min = config.getfloat("ZOOM", "attente_min")
 attente_max = config.getfloat("ZOOM", "attente_max")
+zmax=config.getfloat("ZOOM", "zoom_max")
 
 #Pour la tete de lecture:
 liste_proba = config.get("tete_de_lecture", "liste_proba")
