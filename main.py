@@ -79,8 +79,8 @@ while running:
                                 zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map)
 
             else:
-                temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
-                    = zoom_automatique(Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
+                sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
+                    = zoom_automatique(sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom,listZoomAuto, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto,\
                                        temps_changement_zoom, attente_min, attente_max)
 
@@ -88,10 +88,13 @@ while running:
          #ZOOM MANUEL
         else:
             if zoom_en_cours_Auto:
-                temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
-                    = zoom_automatique(Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
-                                       limite_up_y, temps_debut_zoom, listZoomAuto, directionZoom, zinit, zf, indice_zoom,
-                                       zoom_en_cours_Auto, temps_changement_zoom, attente_min, attente_max)
+                sens_deplacement_x, direction_deplacement_x, sens_deplacement_y, direction_deplacement_y, temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
+                    = zoom_automatique(sens_deplacement_x, direction_deplacement_x, sens_deplacement_y,
+                                       direction_deplacement_y, Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x,
+                                       size_y, limite_up_x,
+                                       limite_up_y, temps_debut_zoom, listZoomAuto, directionZoom, zinit, zf,
+                                       indice_zoom, zoom_en_cours_Auto, \
+                                       temps_changement_zoom, attente_min, attente_max)
             else:
 
                 Zt, indice_zoom, temps_debut_zoom, zinit, zf, zoom_en_cours_manuel = \
