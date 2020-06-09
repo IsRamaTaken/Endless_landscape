@@ -7,7 +7,11 @@ from zoom import *
 
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
+from matplotlib import pyplot as plt
 
+listposX=[]
+listposY=[]
+listtemps=[]
 
 screen = pygame.display.set_mode((size_x, size_y))
 
@@ -67,6 +71,7 @@ while running:
         sens_deplacement_y = 0
         arret_y = True
 
+    posX_debut=posX
 
     #ZOOM
     if choix_zoom_ou_non:
@@ -108,6 +113,8 @@ while running:
     size_window_x=int(size_x/Zt)
     size_window_y=int(size_y/Zt)
 
+    if posX!=posX_debut:
+        print('salut')
     #deplacement cadre:
     if choix_cadre:
         if type_deplacement_cadre:
@@ -160,8 +167,11 @@ while running:
             print(zoomPossible(zinit, listZoomManuel[i], vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y))
 
     
-
-
+    listposX.append(posX)
+    listposY.append(posY)
+    listtemps.append(temps_x)
+    if temps_x!=temps_y:
+        print(temps_x-temps_y)
 
 
     img = frame_list[lecture]
@@ -193,11 +203,15 @@ while running:
 
 
 
+
+
+
     """Si on affiche les images trop vite par rapport au framerate voulu, on fait une pause"""
     temps_fin_calcul_fps_continu = time.time()
 
     temps_debut_calcul_fps_continu = time.time()
-
+plt.plot(listposX,listposY,'-v')
+plt.show()
 cv2.destroyAllWindows()
 pygame.quit()
 print(clock.get_fps())
