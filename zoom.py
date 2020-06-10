@@ -32,7 +32,7 @@ def zoomPossible(zinit,zf,vx,vy,vzoom,posX,posY,size_x,size_y,limit_up_x,limit_u
 
         return int(posX-(newSizeX/2)-deltaX)>=0 and int(posX+(newSizeX/2)+deltaX)<=limit_up_x and int(posY-(newSizeY/2)-deltaY)>=0 and int(posY+(newSizeY/2)+deltaY)<=limit_up_y
 
-def zoom_automatique(sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,attente_min,attente_max):
+def zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,attente_min,attente_max):
     duree_changement = time.time() - temps_changement_zoom
     if zoom_en_cours_auto :
         t = time.time() - temps_debut_zoom
@@ -55,7 +55,7 @@ def zoom_automatique(sens_deplacement_x, direction_deplacement_x,sens_deplacemen
             Zsuivant=zoomPossible(zinit, listZoom[min(9,indice_zoom+1)], vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y)
 
             if directionZoom==1 :
-                if tirage(1/3):
+                if tirage(1-probaZoom): #probaZoom c'est la probabilité de zoomer quand on privilégie le zoom
                     if Zpred and indice_zoom>0 :
                         indice_zoom-=1
                     else:
@@ -69,7 +69,7 @@ def zoom_automatique(sens_deplacement_x, direction_deplacement_x,sens_deplacemen
 
             elif directionZoom==-1:
 
-                if tirage(2/3):
+                if tirage(probaDezoom):   #probaDezoom c'est la probabilité de dézoomer quand on privilégie le dézoom
                     if Zpred  :
                         indice_zoom-=1
                     else:
@@ -86,7 +86,7 @@ def zoom_automatique(sens_deplacement_x, direction_deplacement_x,sens_deplacemen
             zoom_en_cours_auto=True
 
             temps_debut_zoom=time.time()
-    return sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,Zt
+    return probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,Zt
 
 
 def Zoom_Manuel( Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoomManuel,zinit,zf,zoom_en_cours_manuel,indice_zoom, indiceZoomDefault , keys, input_map):

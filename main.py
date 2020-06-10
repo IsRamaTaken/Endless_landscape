@@ -8,6 +8,16 @@ from zoom import *
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
+from ROI import *
+
+#ROI
+posXfinal=900
+posYfinal=600
+lecturefinal=20
+posXatteint=posX==posXfinal
+posYatteint=posY==posYfinal
+lectureAtteint=lecture==lecturefinal
+ROI=False
 
 listposX=[]
 listposY=[]
@@ -25,6 +35,9 @@ running = True
 """   Début de la boucle infini de choix d'image et d'affichage   """
 
 clock = pygame.time.Clock()
+
+plt.ion()
+plt.title('trajectoire du cadre')
 
 while running:
 
@@ -72,7 +85,6 @@ while running:
         arret_y = True
 
     posX_debut=posX
-
     #ZOOM
     if choix_zoom_ou_non:
         if not type_zoom:
@@ -84,8 +96,8 @@ while running:
                                 zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map)
 
             else:
-                sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
-                    = zoom_automatique(sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
+                probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
+                    = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom,listZoomAuto, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto,\
                                        temps_changement_zoom, attente_min, attente_max)
 
@@ -93,8 +105,8 @@ while running:
          #ZOOM MANUEL
         else:
             if zoom_en_cours_Auto:
-                sens_deplacement_x, direction_deplacement_x, sens_deplacement_y, direction_deplacement_y, temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
-                    = zoom_automatique(sens_deplacement_x, direction_deplacement_x, sens_deplacement_y,
+                probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x, sens_deplacement_y, direction_deplacement_y, temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
+                    = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x, sens_deplacement_y,
                                        direction_deplacement_y, Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x,
                                        size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom, listZoomAuto, directionZoom, zinit, zf,
@@ -173,6 +185,18 @@ while running:
     if temps_x!=temps_y:
         print(temps_x-temps_y)
 
+    if ROI :
+        if not posXatteint:
+            posX+=30*deplacementvers(posX,posXfinal) # il faut fixer la vitesse
+        if not posYatteint:
+            posY+=deplacementvers(posY,posYfinal)
+        if not lectureAtteint:
+            lecture+=deplacementvers(lecture,lecturefinal)
+        posXatteint = posX == posXfinal
+        posYatteint = posY == posYfinal
+        lectureAtteint = lecture == lecturefinal
+
+    print(posY,posX)
 
     img = frame_list[lecture]
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]
@@ -198,11 +222,7 @@ while running:
 
     pygame.display.update()
 
-
-
-
-
-
+    plt.plot(posX,posY,'-o')
 
 
 
@@ -210,8 +230,11 @@ while running:
     temps_fin_calcul_fps_continu = time.time()
 
     temps_debut_calcul_fps_continu = time.time()
-plt.plot(listposX,listposY,'-v')
-plt.show()
+
+
+
 cv2.destroyAllWindows()
 pygame.quit()
 print(clock.get_fps())
+
+
