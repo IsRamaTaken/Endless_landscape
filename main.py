@@ -8,6 +8,7 @@ from zoom import *
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
+from deplacement_souris import *
 
 listposX=[]
 listposY=[]
@@ -17,6 +18,9 @@ screen = pygame.display.set_mode((size_x, size_y))
 
 if fullscreen:
     pygame.display.set_mode(modes[0], pygame.FULLSCREEN)
+
+    # On déplace la souris de telle maniere a ne plus la voir:
+    deplacement_souris()
 pygame.key.set_repeat(100, 100)
 
 running = True
@@ -210,8 +214,10 @@ while running:
     temps_fin_calcul_fps_continu = time.time()
 
     temps_debut_calcul_fps_continu = time.time()
-plt.plot(listposX,listposY,'-v')
-plt.show()
+
+
+#plt.plot(listposX,listposY,'-v')
+#plt.show()
 cv2.destroyAllWindows()
 pygame.quit()
 print(clock.get_fps())
