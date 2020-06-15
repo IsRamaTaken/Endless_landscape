@@ -14,7 +14,11 @@ listposX=[]
 listposY=[]
 listtemps=[]
 
-screen = pygame.display.set_mode((size_x, size_y))
+if sens % 2 == 0:
+    screen = pygame.display.set_mode((size_y, size_x))
+elif sens % 2 == 1:
+    screen = pygame.display.set_mode((size_x, size_y))
+
 
 if fullscreen:
     pygame.display.set_mode(modes[0], pygame.FULLSCREEN)
@@ -190,7 +194,7 @@ while running:
         video_output.write(img)
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    frame = np.rot90(img)
+    frame = np.rot90(img, sens)
     frame = pygame.surfarray.make_surface(frame)
     frame = pygame.transform.flip(frame, True, False)
     frame_rect=frame.get_rect()

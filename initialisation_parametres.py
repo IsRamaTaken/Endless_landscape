@@ -126,8 +126,11 @@ arret_x = False
 arret_y = False
 
 modes = pygame.display.list_modes()
-accroche_x = (modes[0][0] - size_x) / 2
-accroche_y = (modes[0][1] - size_y) / 2
-
+if sens % 2 == 1:
+    accroche_x = (modes[0][0] - size_x) / 2
+    accroche_y = (modes[0][1] - size_y) / 2
+else:
+    accroche_x = (modes[0][0] - size_y) / 2
+    accroche_y = (modes[0][1] - size_x) / 2
 
 """   Fin de l'initialisation   """

@@ -63,6 +63,7 @@ output_file = config.get("output_video", "output_file")
 codec = config.get("output_video", "codec")
 framerate = config.getint("output_video", "framerate")
 fullscreen = config.getboolean("output_video", "fullscreen")
+sens = config.getint("output_video", "sens")
 
 #Pour les inputs clavier:
 
