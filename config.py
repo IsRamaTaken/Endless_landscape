@@ -80,3 +80,4 @@ for key in input_map:
 #Si le chemin n'est pas absolu, on le complète pour qu'il le soit
 if not os.path.isabs(path):
     path = os.path.join(os.path.dirname(__file__), path)
+

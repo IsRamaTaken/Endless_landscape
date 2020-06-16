@@ -172,8 +172,8 @@ while running:
 
     if choix_t:
         if not type_deplacement_tete:
-            lecture, sens_lecture, direction_lecture, temps_lecture = deplacement_t(
-                    temps_lecture, lecture, direction_lecture, nombre_de_frame, sens_lecture, temps_min_changement_t, probabilite_changement_selon_direction_t, liste_proba, indice_proba)
+            lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
+                    frame_lecture, lecture, direction_lecture, nombre_de_frame, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame)
             indice_proba, temps_changement_proba = changement_proba(
                 temps_changement_proba, temps_entre_changement_proba, indice_proba, liste_proba)
 
