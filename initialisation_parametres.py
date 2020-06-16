@@ -89,16 +89,16 @@ compteur_de_frame = 0
 
 #Initialisation des temps:
 temps_debut_calcul_fps_continu = time.time()
-temps_lecture = time.time()         #permet de calculer la durée qui s'est écoulé entre de changement de sens de lecture
-temps_x_changement=time.time()      #permet de calculer la durée qui s'est écoulé entre de changement de direction de déplacement du cadre selon x
-temps_x = time.time()               #permet de calculer la durée écouler dans la boucle pour calculer le déplacement selon x
-temps_y_changement=time.time()      #permet de calculer la durée qui d'est écoulé entre de changement de direction de déplacement du cadre selon y
-temps_y = time.time()               #permet de calculer la durée écouler dans la boucle pour calculer le déplacement selon y
-debut_bord_x = time.time()          #Permet de calculer la durée que reste le cadre ur le bord de l'image en x
-debut_bord_y = time.time()          #Permet de calculer la durée que reste le cadre ur le bord de l'image en y
-temps_changement_zoom=time.time()   #permet de calculer la durée qui s'est écoulé avant le zoom précédent
+temps_lecture = 0         #permet de calculer la durée qui s'est écoulé entre de changement de sens de lecture
+temps_x_changement=0      #permet de calculer la durée qui s'est écoulé entre de changement de direction de déplacement du cadre selon x
+
+temps_y_changement=0       #permet de calculer la durée qui d'est écoulé entre de changement de direction de déplacement du cadre selon y
+
+debut_bord_x = 0          #Permet de calculer la durée que reste le cadre ur le bord de l'image en x
+debut_bord_y = 0          #Permet de calculer la durée que reste le cadre ur le bord de l'image en y
+temps_changement_zoom=0   #permet de calculer la durée qui s'est écoulé avant le zoom précédent
 temps_debut_zoom=0
-temps_changement_proba = time.time()
+temps_changement_proba = 0
 
 
 #Initialisation Zoom:

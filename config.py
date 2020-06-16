@@ -80,3 +80,31 @@ for key in input_map:
 #Si le chemin n'est pas absolu, on le complète pour qu'il le soit
 if not os.path.isabs(path):
     path = os.path.join(os.path.dirname(__file__), path)
+
+
+
+# conversion du temps seconde en image
+
+#Pour le cadre:
+
+vitesse_x /= framerate
+vitesse_y /= framerate
+temps_min_x *= framerate
+temps_max_x *= framerate
+temps_min_y *= framerate
+temps_max_y *= framerate
+temps_min_changement_x *= framerate
+temps_min_changement_y *= framerate
+
+temps_arret_x *=framerate
+temps_arret_y *= framerate
+
+#ZOOM
+
+vzoom /=framerate
+attente_min *= framerate
+attente_max *= framerate
+
+#Pour la tete de lecture:
+
+temps_min_changement_t *= framerate
