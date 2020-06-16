@@ -137,10 +137,4 @@ else:
     accroche_x = (modes[0][0] - size_y) / 2
     accroche_y = (modes[0][1] - size_x) / 2
 
-# On transforme les conditions sur le temps en conditions en nombre de frame via le framerate:
-
-nb_frame_min_changement_lecture = int(temps_min_changement_t * framerate)
-
-
-
 """   Fin de l'initialisation   """

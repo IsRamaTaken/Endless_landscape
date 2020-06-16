@@ -81,8 +81,6 @@ for key in input_map:
 if not os.path.isabs(path):
     path = os.path.join(os.path.dirname(__file__), path)
 
-<<<<<<< HEAD
-
 
 # conversion du temps seconde en image
 
@@ -108,6 +106,5 @@ attente_max *= framerate
 
 #Pour la tete de lecture:
 
-temps_min_changement_t *= framerate
-=======
->>>>>>> 1156c01ac906a504aa2cd84531b6afa646c250d6
+nb_frame_min_changement_lecture = int(temps_min_changement_t * framerate)
+
