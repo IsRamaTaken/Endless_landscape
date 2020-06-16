@@ -32,15 +32,15 @@ def zoomPossible(zinit,zf,vx,vy,vzoom,posX,posY,size_x,size_y,limit_up_x,limit_u
 
         return int(posX-(newSizeX/2)-deltaX)>=0 and int(posX+(newSizeX/2)+deltaX)<=limit_up_x and int(posY-(newSizeY/2)-deltaY)>=0 and int(posY+(newSizeY/2)+deltaY)<=limit_up_y
 
-def zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,attente_min,attente_max):
-    duree_changement = time.time() - temps_changement_zoom
+def zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,attente_min,attente_max, compteur_de_frame):
+    duree_changement = compteur_de_frame - temps_changement_zoom
     if zoom_en_cours_auto :
         Zt+=signe(zf-zinit)*vzoom
         if (Zt>=zf and signe(zf-zinit)==1) or (Zt<=zf and signe(zf-zinit)==-1):
             Zt=zf
             zinit=zf
             zoom_en_cours_auto=False
-            temps_changement_zoom=time.time()
+            temps_changement_zoom=compteur_de_frame
 
     else:
         attente=uniform(attente_min,attente_max)
@@ -84,11 +84,11 @@ def zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplace
             zf=listZoom[indice_zoom]
             zoom_en_cours_auto=True
 
-            temps_debut_zoom=time.time()
+            temps_debut_zoom=compteur_de_frame
     return probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,Zt
 
 
-def Zoom_Manuel( Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoomManuel,zinit,zf,zoom_en_cours_manuel,indice_zoom, indiceZoomDefault , keys, input_map):
+def Zoom_Manuel( Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoomManuel,zinit,zf,zoom_en_cours_manuel,indice_zoom, indiceZoomDefault , keys, input_map,compteur_de_frame):
 
     if zoom_en_cours_manuel :
 
@@ -110,7 +110,7 @@ def Zoom_Manuel( Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit
                     indice_zoom=i
 
                 zf = listZoomManuel[i]
-                temps_debut_zoom = time.time()
+                temps_debut_zoom = compteur_de_frame
 
 
     return Zt,indice_zoom,temps_debut_zoom,zinit,zf,zoom_en_cours_manuel

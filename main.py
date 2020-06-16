@@ -110,13 +110,13 @@ while running:
                 Zt, indice_zoom, temps_debut_zoom, zinit, zf, zoom_en_cours_manuel = \
                     Zoom_Manuel(Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
                                 temps_debut_zoom, listZoomManuel, \
-                                zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map)
+                                zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map,compteur_de_frame)
 
             else:
                 probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
                     = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom,listZoomAuto, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto,\
-                                       temps_changement_zoom, attente_min, attente_max)
+                                       temps_changement_zoom, attente_min, attente_max,compteur_de_frame)
 
 
          #ZOOM MANUEL
@@ -128,13 +128,13 @@ while running:
                                        size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom, listZoomAuto, directionZoom, zinit, zf,
                                        indice_zoom, zoom_en_cours_Auto, \
-                                       temps_changement_zoom, attente_min, attente_max)
+                                       temps_changement_zoom, attente_min, attente_max,compteur_de_frame)
             else:
 
                 Zt, indice_zoom, temps_debut_zoom, zinit, zf, zoom_en_cours_manuel = \
                     Zoom_Manuel(Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
                                 temps_debut_zoom,listZoomManuel,\
-                                zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map)
+                                zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map,compteur_de_frame)
 
 
 
@@ -174,7 +174,7 @@ while running:
             lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
                     frame_lecture, lecture, direction_lecture, nombre_de_frame, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame)
             indice_proba, temps_changement_proba = changement_proba(
-                temps_changement_proba, temps_entre_changement_proba, indice_proba, liste_proba)
+                temps_changement_proba, temps_entre_changement_proba, indice_proba, liste_proba,compteur_de_frame)
 
 
         if keys[input_map["changement_lecture"]]:
