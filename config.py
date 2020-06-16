@@ -81,12 +81,6 @@ for key in input_map:
 if not os.path.isabs(path):
     path = os.path.join(os.path.dirname(__file__), path)
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 7e9b85c088180903d3334374d0266734d0e1b29b
-
 # conversion du temps seconde en image
 
 #Pour le cadre:
