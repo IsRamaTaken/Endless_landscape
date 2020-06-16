@@ -1,28 +1,24 @@
 import time
 from random import randint
-from numpy.random import uniform
-
-
-def tirage(probabilite):  # marche aléatoire
-    return uniform() <= probabilite
+from fonction import *
 
 
 def deplacement_automatique_x_y( pos, pos_reel, sens_deplacement, direction_deplacement,
                                 vitesse, limite_up, size, bord_atteint, bord_atteint_debut, debut_bord,
                                 temps_restant_bord, temps_min, temps_max, temps_min_changement,
                                 probabilite_changement_sens, probabilite_changement_selon_direction,
-                                temps_changement):
+                                temps_changement, compteur_frame):
     if not bord_atteint:
-        duree_changement = time.time() - temps_changement
+        duree_changement = compteur_frame - temps_changement
         if duree_changement > temps_min_changement:
             tirage_sens = tirage(probabilite_changement_sens)
             tirage_direction = tirage(probabilite_changement_selon_direction)
             if tirage_sens:
                 sens_deplacement = - sens_deplacement
-                temps_changement = time.time()
+                temps_changement = compteur_frame
             if tirage_direction:
                 sens_deplacement = direction_deplacement
-                temps_changement = time.time()
+                temps_changement = compteur_frame
 
         pos_reel += sens_deplacement * vitesse
         pos = int(pos_reel)
@@ -30,10 +26,10 @@ def deplacement_automatique_x_y( pos, pos_reel, sens_deplacement, direction_depl
         bord_atteint = pos<= size//2 + size%2 -1 or pos>= limite_up - size//2
     else:
         if bord_atteint_debut:
-            debut_bord = time.time()
+            debut_bord = compteur_frame
             bord_atteint_debut = False
             direction_deplacement = - direction_deplacement
-        duree_bord_atteint = time.time() - debut_bord
+        duree_bord_atteint = compteur_frame - debut_bord
         if duree_bord_atteint > temps_restant_bord:
             if pos == size//2 +size%2 -1:
                 sens_deplacement = 1
