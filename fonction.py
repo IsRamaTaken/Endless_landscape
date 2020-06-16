@@ -7,7 +7,7 @@ def signe(z):
     else:
         return(-1)
 
-def conversionvitesse(clock,vitesse_x,vitesse_y,vzoom,framerate): # convertit le vitesse en qq par image
+def conversionvitesse(clock,vitesse_x,vitesse_y,vzoom,framerate): # convertit le vitesse en pixel par image ou en niveau de zoom par image
     fps=clock.get_fps()
     if fps<0.5: fps=framerate
     return vitesse_x/fps,vitesse_y/fps,vzoom/fps
