@@ -8,7 +8,6 @@ from zoom import *
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
-<<<<<<< HEAD
 from ROI import *
 from fonction import *
 
@@ -20,9 +19,8 @@ posXatteint=posX==posXfinal
 posYatteint=posY==posYfinal
 lectureAtteint=lecture==lecturefinal
 ROI=False
-=======
+
 from deplacement_souris import *
->>>>>>> ff71630b2f01cc01683ae404c38b8ef81c9ed6ad
 
 listposX=[]
 listposY=[]
@@ -247,12 +245,9 @@ while running:
     temps_debut_calcul_fps_continu = time.time()
 
 
-<<<<<<< HEAD
-
-=======
 #plt.plot(listposX,listposY,'-v')
 #plt.show()
->>>>>>> ff71630b2f01cc01683ae404c38b8ef81c9ed6ad
+
 cv2.destroyAllWindows()
 pygame.quit()
 print(clock.get_fps())
