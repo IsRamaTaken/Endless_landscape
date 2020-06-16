@@ -2,6 +2,8 @@ import cv2
 import pygame
 from config import *
 
+
+# Initialisation du "splash screen"
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 pygame.init()
 pygame.display.set_caption("endless_landscape")

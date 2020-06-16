@@ -8,6 +8,7 @@ from zoom import *
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
+<<<<<<< HEAD
 from ROI import *
 from fonction import *
 
@@ -19,15 +20,25 @@ posXatteint=posX==posXfinal
 posYatteint=posY==posYfinal
 lectureAtteint=lecture==lecturefinal
 ROI=False
+=======
+from deplacement_souris import *
+>>>>>>> ff71630b2f01cc01683ae404c38b8ef81c9ed6ad
 
 listposX=[]
 listposY=[]
 listtemps=[]
 
-screen = pygame.display.set_mode((size_x, size_y))
+if sens % 2 == 0:
+    screen = pygame.display.set_mode((size_y, size_x))
+elif sens % 2 == 1:
+    screen = pygame.display.set_mode((size_x, size_y))
+
 
 if fullscreen:
     pygame.display.set_mode(modes[0], pygame.FULLSCREEN)
+
+    # On déplace la souris de telle maniere a ne plus la voir:
+    deplacement_souris()
 pygame.key.set_repeat(100, 100)
 
 running = True
@@ -212,7 +223,7 @@ while running:
         video_output.write(img)
 
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-    frame = np.rot90(img)
+    frame = np.rot90(img, sens)
     frame = pygame.surfarray.make_surface(frame)
     frame = pygame.transform.flip(frame, True, False)
     frame_rect=frame.get_rect()
@@ -236,7 +247,12 @@ while running:
     temps_debut_calcul_fps_continu = time.time()
 
 
+<<<<<<< HEAD
 
+=======
+#plt.plot(listposX,listposY,'-v')
+#plt.show()
+>>>>>>> ff71630b2f01cc01683ae404c38b8ef81c9ed6ad
 cv2.destroyAllWindows()
 pygame.quit()
 print(clock.get_fps())
