@@ -9,6 +9,7 @@ from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
 from ROI import *
+from fonction import *
 
 #ROI
 posXfinal=900
@@ -36,12 +37,20 @@ running = True
 
 clock = pygame.time.Clock()
 
-plt.ion()
-plt.title('trajectoire du cadre')
+#plt.ion()
+#plt.title('trajectoire du cadre')
+
+
 
 while running:
 
+    posydebut=pos_y_reel
+
     clock.tick(framerate)
+
+    vitesse_xImage,vitesse_yImage,vzoomImage=conversionvitesse(clock,vitesse_x,vitesse_y,vzoom,framerate)                  #on convertit la vitesse en image par pixel, on le covertit tout le temps car le framerate evolue au cours du temps
+
+
 
 
     for event in pygame.event.get():
@@ -91,13 +100,13 @@ while running:
             # ZOOM AUTO
             if zoom_en_cours_manuel:
                 Zt, indice_zoom, temps_debut_zoom, zinit, zf, zoom_en_cours_manuel = \
-                    Zoom_Manuel(Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
+                    Zoom_Manuel(Zt, vitesse_xImage, vitesse_yImage, vzoomImage, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
                                 temps_debut_zoom, listZoomManuel, \
                                 zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map)
 
             else:
                 probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
-                    = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
+                    = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt, vitesse_xImage, vitesse_yImage, vzoomImage, posX, posY, size_x, size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom,listZoomAuto, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto,\
                                        temps_changement_zoom, attente_min, attente_max)
 
@@ -107,7 +116,7 @@ while running:
             if zoom_en_cours_Auto:
                 probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x, sens_deplacement_y, direction_deplacement_y, temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
                     = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x, sens_deplacement_y,
-                                       direction_deplacement_y, Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x,
+                                       direction_deplacement_y, Zt, vitesse_xImage, vitesse_yImage, vzoomImage, posX, posY, size_x,
                                        size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom, listZoomAuto, directionZoom, zinit, zf,
                                        indice_zoom, zoom_en_cours_Auto, \
@@ -115,7 +124,7 @@ while running:
             else:
 
                 Zt, indice_zoom, temps_debut_zoom, zinit, zf, zoom_en_cours_manuel = \
-                    Zoom_Manuel(Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
+                    Zoom_Manuel(Zt, vitesse_xImage, vitesse_yImage, vzoomImage, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
                                 temps_debut_zoom,listZoomManuel,\
                                 zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map)
 
@@ -130,24 +139,24 @@ while running:
     #deplacement cadre:
     if choix_cadre:
         if type_deplacement_cadre:
-            arret_x,arret_y,temps_x, temps_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y= \
-                deplacement_manuel(arret_x,arret_y,temps_x,temps_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_x, posY,
-                                   sens_deplacement_y, limite_up_y, size_window_y, vitesse_y, pos_x_reel, pos_y_reel, keys,
+            arret_x,arret_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y= \
+                deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_xImage, posY,
+                                   sens_deplacement_y, limite_up_y, size_window_y, vitesse_yImage, pos_x_reel, pos_y_reel, keys,
                                    input_map)
 
         else:
             if not arret_x:
-                posX, pos_x_reel, temps_x, sens_deplacement_x, direction_deplacement_x, bord_atteint_x, \
+                posX, pos_x_reel, sens_deplacement_x, direction_deplacement_x, bord_atteint_x, \
                 bord_atteint_x_debut, temps_restant_bord_x, debut_bord_x, temps_x_changement = deplacement_automatique_x_y(
-                    temps_x, posX, pos_x_reel, sens_deplacement_x, direction_deplacement_x, vitesse_x, limite_up_x,
+                     posX, pos_x_reel, sens_deplacement_x, direction_deplacement_x, vitesse_xImage, limite_up_x,
                     size_window_x, bord_atteint_x, bord_atteint_x_debut, debut_bord_x, temps_restant_bord_x,
                     temps_min_x, temps_max_x, temps_min_changement_x, probabilite_changement_sens_x,
                     probabilite_changement_selon_direction_x, temps_x_changement)
 
             if not arret_y:
-                posY, pos_y_reel, temps_y, sens_deplacement_y, direction_deplacement_y, bord_atteint_y, \
+                posY, pos_y_reel,  sens_deplacement_y, direction_deplacement_y, bord_atteint_y, \
                 bord_atteint_y_debut, temps_restant_bord_y, debut_bord_y, temps_y_changement = deplacement_automatique_x_y(
-                    temps_y, posY, pos_y_reel, sens_deplacement_y, direction_deplacement_y, vitesse_y, limite_up_y,
+                     posY, pos_y_reel, sens_deplacement_y, direction_deplacement_y, vitesse_yImage, limite_up_y,
                     size_window_y, bord_atteint_y, bord_atteint_y_debut, debut_bord_y, temps_restant_bord_y,
                     temps_min_y, temps_max_y, temps_min_changement_y, probabilite_changement_sens_y,
                     probabilite_changement_selon_direction_y, temps_y_changement)
@@ -174,18 +183,11 @@ while running:
             direction_lecture = -1
         
 
-    for i in range(10):
-        if keys[input_map["zoom_" + str(i)]]:
-            print(zoomPossible(zinit, listZoomManuel[i], vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y))
 
-    
-    listposX.append(posX)
-    listposY.append(posY)
-    listtemps.append(temps_x)
-    if temps_x!=temps_y:
-        print(temps_x-temps_y)
 
-    if ROI :
+
+
+    elif ROI :
         if not posXatteint:
             posX+=30*deplacementvers(posX,posXfinal) # il faut fixer la vitesse
         if not posYatteint:
@@ -196,7 +198,7 @@ while running:
         posYatteint = posY == posYfinal
         lectureAtteint = lecture == lecturefinal
 
-    print(posY,posX)
+
 
     img = frame_list[lecture]
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]
@@ -222,7 +224,9 @@ while running:
 
     pygame.display.update()
 
-    plt.plot(posX,posY,'-o')
+
+    #plt.plot(posX,posY,'-o')
+
 
 
 

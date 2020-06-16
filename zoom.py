@@ -24,19 +24,18 @@ def zoomPossible(zinit,zf,vx,vy,vzoom,posX,posY,size_x,size_y,limit_up_x,limit_u
         return True   #ICI on zoom donc pas de problème puisqu'on réduit la taille de la fenêtre
 
     else:
-        duree=abs(zf-zinit)/vzoom
+        nbFrame=abs(zf-zinit)/vzoom  #on calcule le nb de frame pour passer d'un zoom
         newSizeX = int(size_x / zf)   #taille de la fenêtre sur l'image d'origine
         newSizeY = int(size_y / zf)
-        deltaX=duree*vx
-        deltaY=duree*vy
+        deltaX=nbFrame*vx
+        deltaY=nbFrame*vy
 
         return int(posX-(newSizeX/2)-deltaX)>=0 and int(posX+(newSizeX/2)+deltaX)<=limit_up_x and int(posY-(newSizeY/2)-deltaY)>=0 and int(posY+(newSizeY/2)+deltaY)<=limit_up_y
 
 def zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoom,directionZoom,zinit,zf,indice_zoom,zoom_en_cours_auto,temps_changement_zoom,attente_min,attente_max):
     duree_changement = time.time() - temps_changement_zoom
     if zoom_en_cours_auto :
-        t = time.time() - temps_debut_zoom
-        Zt=signe(zf-zinit)*vzoom*t +zinit
+        Zt+=signe(zf-zinit)*vzoom
         if (Zt>=zf and signe(zf-zinit)==1) or (Zt<=zf and signe(zf-zinit)==-1):
             Zt=zf
             zinit=zf
@@ -92,8 +91,8 @@ def zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplace
 def Zoom_Manuel( Zt,vx, vy, vzoom, posX, posY, size_x, size_y, limit_up_x, limit_up_y,temps_debut_zoom,listZoomManuel,zinit,zf,zoom_en_cours_manuel,indice_zoom, indiceZoomDefault , keys, input_map):
 
     if zoom_en_cours_manuel :
-        t = time.time() - temps_debut_zoom
-        Zt=signe(zf-zinit)*vzoom*t +zinit
+
+        Zt+=signe(zf-zinit)*vzoom
         if (Zt>=zf and signe(zf-zinit)==1) or (Zt<=zf and signe(zf-zinit)==-1):
             Zt=zf
             zinit=zf

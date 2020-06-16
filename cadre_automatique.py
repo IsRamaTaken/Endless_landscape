@@ -7,7 +7,7 @@ def tirage(probabilite):  # marche aléatoire
     return uniform() <= probabilite
 
 
-def deplacement_automatique_x_y(temps, pos, pos_reel, sens_deplacement, direction_deplacement,
+def deplacement_automatique_x_y( pos, pos_reel, sens_deplacement, direction_deplacement,
                                 vitesse, limite_up, size, bord_atteint, bord_atteint_debut, debut_bord,
                                 temps_restant_bord, temps_min, temps_max, temps_min_changement,
                                 probabilite_changement_sens, probabilite_changement_selon_direction,
@@ -23,10 +23,10 @@ def deplacement_automatique_x_y(temps, pos, pos_reel, sens_deplacement, directio
             if tirage_direction:
                 sens_deplacement = direction_deplacement
                 temps_changement = time.time()
-        duree = time.time() - temps
-        pos_reel += sens_deplacement * vitesse * duree
+
+        pos_reel += sens_deplacement * vitesse
         pos = int(pos_reel)
-        temps = time.time()
+
         bord_atteint = pos<= size//2 + size%2 -1 or pos>= limite_up - size//2
     else:
         if bord_atteint_debut:
@@ -42,10 +42,10 @@ def deplacement_automatique_x_y(temps, pos, pos_reel, sens_deplacement, directio
             bord_atteint = False
             bord_atteint_debut = True
             temps_restant_bord = randint(temps_min, temps_max)
-            temps = time.time()
+
     if pos <= size//2 + size % 2 - 1:
         pos = size//2 + size % 2 - 1
     elif pos > limite_up - size//2:
         pos = limite_up - size//2
-    return pos, pos_reel, temps, sens_deplacement, direction_deplacement,\
+    return pos, pos_reel, sens_deplacement, direction_deplacement,\
            bord_atteint, bord_atteint_debut, temps_restant_bord, debut_bord, temps_changement
