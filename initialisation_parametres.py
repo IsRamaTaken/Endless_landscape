@@ -100,6 +100,10 @@ temps_changement_zoom=0   #permet de calculer la durée qui s'est écoulé avant
 temps_debut_zoom=0
 temps_changement_proba = 0
 
+# Initialisation de frame_lecture pour le premier changement de sens de t
+frame_lecture = 0
+
+
 
 #Initialisation Zoom:
 
@@ -132,5 +136,11 @@ if sens % 2 == 1:
 else:
     accroche_x = (modes[0][0] - size_y) / 2
     accroche_y = (modes[0][1] - size_x) / 2
+
+# On transforme les conditions sur le temps en conditions en nombre de frame via le framerate:
+
+nb_frame_min_changement_lecture = int(temps_min_changement_t * framerate)
+
+
 
 """   Fin de l'initialisation   """
