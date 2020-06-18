@@ -6,6 +6,18 @@ from preparation_video import *
 lecture = randint(0, nombre_de_frame-1)
 indice_proba = 0
 
+# Initialisation de l'indice de la vitesse de  déplacement du cadre:
+
+indice_vitesse_x = randint(0, len(vitesse_x)-1)
+indice_vitesse_y = randint(0, len(vitesse_y)-1)
+
+# Initialisation des vitesses actuelles en x et y:
+vitesse_actuelle_x = vitesse_x[indice_vitesse_x]
+vitesse_actuelle_y = vitesse_y[indice_vitesse_y]
+
+# Initialisation du temps entre chaque changement de vitesse :
+temps_chgmt_indice_x = 0
+temps_chgmt_indice_y = 0
 
 #Initialisation de la taille de la fenêtre
 size_window_x = size_x
@@ -88,8 +100,7 @@ deplacement_automatique = True
 compteur_de_frame = 0
 
 #Initialisation des temps:
-temps_debut_calcul_fps_continu = time.time()
-temps_lecture = 0         #permet de calculer la durée qui s'est écoulé entre de changement de sens de lecture
+
 temps_x_changement=0      #permet de calculer la durée qui s'est écoulé entre de changement de direction de déplacement du cadre selon x
 
 temps_y_changement=0       #permet de calculer la durée qui d'est écoulé entre de changement de direction de déplacement du cadre selon y

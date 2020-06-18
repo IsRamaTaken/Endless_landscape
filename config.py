@@ -22,8 +22,21 @@ manuel_auto = 0
 type_deplacement_cadre = manuel_auto
 size_x = config.getint("cadre", "size_x")
 size_y = config.getint("cadre", "size_y")
-vitesse_x = config.getint("cadre", "vitesse_deplacement_x")
-vitesse_y = config.getint("cadre", "vitesse_deplacement_y")
+
+vitesse_x = config.get("cadre", "vitesse_deplacement_x")
+vitesse_y = config.get("cadre", "vitesse_deplacement_y")
+
+vitesse_x = vitesse_x.split()
+vitesse_y = vitesse_y.split()
+
+for i in range(len(vitesse_x)):
+    vitesse_x[i] = float(vitesse_x[i])
+for i in range(len(vitesse_y)):
+    vitesse_y[i] = float(vitesse_y[i])
+
+temps_min_chgmt_vitesse_x = config.getfloat("cadre", "temps_min_chgmt_vitesse_x")
+temps_min_chgmt_vitesse_y = config.getfloat("cadre", "temps_min_chgmt_vitesse_y")
+
 temps_min_x = config.getint("cadre", "temps_min_x")
 temps_max_x = config.getint("cadre", "temps_max_x")
 temps_min_y = config.getint("cadre", "temps_min_y")
@@ -85,8 +98,12 @@ if not os.path.isabs(path):
 
 #Pour le cadre:
 
-vitesse_x /= framerate
-vitesse_y /= framerate
+for i in range(len(vitesse_x)):
+    vitesse_x[i] = int( vitesse_x[i] / framerate)
+for i in range(len(vitesse_y)):
+    vitesse_y[i] = int( vitesse_y[i] / framerate)
+temps_min_chgmt_vitesse_x = int( temps_min_chgmt_vitesse_x * framerate)
+temps_min_chgmt_vitesse_y = int( temps_min_chgmt_vitesse_y * framerate)
 temps_min_x *= framerate
 temps_max_x *= framerate
 temps_min_y *= framerate
@@ -107,3 +124,9 @@ attente_max *= framerate
 
 nb_frame_min_changement_lecture = int(temps_min_changement_t * framerate)
 
+
+
+
+
+
+print(vitesse_x, vitesse_y)

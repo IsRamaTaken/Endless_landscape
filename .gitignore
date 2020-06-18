@@ -6,12 +6,9 @@ __pycache__/
 
 .idea/
 
-
-<<<<<<< HEAD
-=======
 *.ini
 
 
 #Les fichiers vidéos:
 *.mp4
->>>>>>> 690a0d10139523b51cb7298614d5ab7955dbf873
+

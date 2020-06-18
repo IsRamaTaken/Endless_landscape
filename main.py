@@ -108,13 +108,13 @@ while running:
             # ZOOM AUTO
             if zoom_en_cours_manuel:
                 Zt, indice_zoom, temps_debut_zoom, zinit, zf, zoom_en_cours_manuel = \
-                    Zoom_Manuel(Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
+                    Zoom_Manuel(Zt, vitesse_actuelle_x, vitesse_actuelle_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
                                 temps_debut_zoom, listZoomManuel, \
                                 zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map,compteur_de_frame)
 
             else:
                 probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
-                    = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
+                    = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x,sens_deplacement_y,direction_deplacement_y,Zt, vitesse_actuelle_x, vitesse_actuelle_y, vzoom, posX, posY, size_x, size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom,listZoomAuto, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto,\
                                        temps_changement_zoom, attente_min, attente_max,compteur_de_frame)
 
@@ -124,7 +124,7 @@ while running:
             if zoom_en_cours_Auto:
                 probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x, sens_deplacement_y, direction_deplacement_y, temps_debut_zoom, directionZoom, zinit, zf, indice_zoom, zoom_en_cours_Auto, temps_changement_zoom, Zt \
                     = zoom_automatique(probaZoom,probaDezoom,sens_deplacement_x, direction_deplacement_x, sens_deplacement_y,
-                                       direction_deplacement_y, Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x,
+                                       direction_deplacement_y, Zt, vitesse_actuelle_x, vitesse_actuelle_y, vzoom, posX, posY, size_x,
                                        size_y, limite_up_x,
                                        limite_up_y, temps_debut_zoom, listZoomAuto, directionZoom, zinit, zf,
                                        indice_zoom, zoom_en_cours_Auto, \
@@ -132,7 +132,7 @@ while running:
             else:
 
                 Zt, indice_zoom, temps_debut_zoom, zinit, zf, zoom_en_cours_manuel = \
-                    Zoom_Manuel(Zt, vitesse_x, vitesse_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
+                    Zoom_Manuel(Zt, vitesse_actuelle_x, vitesse_actuelle_y, vzoom, posX, posY, size_x, size_y, limite_up_x, limite_up_y,
                                 temps_debut_zoom,listZoomManuel,\
                                 zinit, zf, zoom_en_cours_manuel, indice_zoom, indiceZoomDefault, keys, input_map,compteur_de_frame)
 
@@ -142,8 +142,6 @@ while running:
     size_window_x=int(size_x/Zt)
     size_window_y=int(size_y/Zt)
 
-    if posX!=posX_debut:
-        print('salut')
     #deplacement cadre:
     if choix_cadre:
         if type_deplacement_cadre:
@@ -156,18 +154,34 @@ while running:
             if not arret_x:
                 posX, pos_x_reel, sens_deplacement_x, direction_deplacement_x, bord_atteint_x, \
                 bord_atteint_x_debut, temps_restant_bord_x, debut_bord_x, temps_x_changement = deplacement_automatique_x_y(
-                     posX, pos_x_reel, sens_deplacement_x, direction_deplacement_x, vitesse_x, limite_up_x,
+                     posX, pos_x_reel, sens_deplacement_x, direction_deplacement_x, vitesse_actuelle_x, limite_up_x,
                     size_window_x, bord_atteint_x, bord_atteint_x_debut, debut_bord_x, temps_restant_bord_x,
                     temps_min_x, temps_max_x, temps_min_changement_x, probabilite_changement_sens_x,
                     probabilite_changement_selon_direction_x, temps_x_changement,compteur_de_frame)
+                
+                
+                indice_vitesse_x, temps_chgmt_indice_x = changement_proba(
+                        temps_chgmt_indice_x, temps_min_chgmt_vitesse_x, indice_vitesse_x, vitesse_x,compteur_de_frame)
+                vitesse_actuelle_x = vitesse_x[indice_vitesse_x]
+
 
             if not arret_y:
                 posY, pos_y_reel,  sens_deplacement_y, direction_deplacement_y, bord_atteint_y, \
                 bord_atteint_y_debut, temps_restant_bord_y, debut_bord_y, temps_y_changement = deplacement_automatique_x_y(
-                     posY, pos_y_reel, sens_deplacement_y, direction_deplacement_y, vitesse_y, limite_up_y,
+                     posY, pos_y_reel, sens_deplacement_y, direction_deplacement_y, vitesse_actuelle_y, limite_up_y,
                     size_window_y, bord_atteint_y, bord_atteint_y_debut, debut_bord_y, temps_restant_bord_y,
                     temps_min_y, temps_max_y, temps_min_changement_y, probabilite_changement_sens_y,
                     probabilite_changement_selon_direction_y, temps_y_changement,compteur_de_frame)
+
+
+                indice_vitesse_y, temps_chgmt_indice_y = changement_proba(
+                        temps_chgmt_indice_y, temps_min_chgmt_vitesse_y, indice_vitesse_y, vitesse_y,compteur_de_frame)
+                vitesse_actuelle_y = vitesse_y[indice_vitesse_y]           
+
+
+
+    print(vitesse_actuelle_x, vitesse_actuelle_y)
+
 
     if choix_t:
         if not type_deplacement_tete:
