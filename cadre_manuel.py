@@ -1,4 +1,4 @@
-import time
+
 
 def deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_x,posY, sens_deplacement_y, limite_up_y, size_window_y, vitesse_y, pos_x_reel,pos_y_reel,keys, input_map):
 

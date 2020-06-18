@@ -1,5 +1,4 @@
-import time
-from random import randint
+
 from fonction import *
 
 
