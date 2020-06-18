@@ -194,9 +194,6 @@ while running:
             indice_vitesse_y, chgmt_vitesse_y_en_cours, vitesse_changement_vitesse_y, vitesse_initiale_y, frame_chgmt_y, compteur_de_frame)
 
 
-    print(indice_vitesse_x, indice_vitesse_y)
-
-
     if choix_t:
         if not type_deplacement_tete:
             lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
