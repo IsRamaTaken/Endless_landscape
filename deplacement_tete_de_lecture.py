@@ -1,6 +1,6 @@
 
 from fonction import *
-from random import randint
+
 
 
 

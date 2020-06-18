@@ -1,5 +1,6 @@
 from numpy.random import uniform
 from random import randint
+from math import *
 
 def signe(z):
     if z>=0:
@@ -44,4 +45,8 @@ def chgmt_vitesse(vitesse_actuelle, liste_vitesse, indice_vitesse, chgmt_vitesse
             chgmt_vitesse_en_cours = False
 
     return vitesse_actuelle, chgmt_vitesse_en_cours
+
+
+def saut_image(vitesse_x,vitesse_y,pos_xdebut,pos_ydebut,posx,posy,seuil=0.0001):
+    return ( abs(abs(pos_xdebut-posx)-vitesse_x)>seuil )or ( abs(abs(pos_ydebut-posx)-vitesse_y)>seuil )
 

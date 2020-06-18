@@ -8,18 +8,8 @@ from zoom import *
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
-from ROI import *
+
 from fonction import *
-
-#ROI
-posXfinal=900
-posYfinal=600
-lecturefinal=20
-posXatteint=posX==posXfinal
-posYatteint=posY==posYfinal
-lectureAtteint=lecture==lecturefinal
-ROI=False
-
 from deplacement_souris import *
 
 listposX=[]
@@ -82,7 +72,7 @@ while running:
         type_deplacement_cadre = 0
         type_deplacement_tete = 0
         type_zoom = 0
-        temps_x, temps_y = time.time(), time.time()
+        temps_x, temps_y = compteur_de_frame,compteur_de_frame
 
 
     elif keys[input_map["mode_manuel"]]:
@@ -90,7 +80,7 @@ while running:
         type_deplacement_cadre = 1
         type_deplacement_tete = 1
         type_zoom = 1
-        temps_x,temps_y=time.time(),time.time()
+        temps_x,temps_y=compteur_de_frame,compteur_de_frame
 
 
     if keys[input_map["stop_cadre_x"]]:
@@ -231,21 +221,6 @@ while running:
 
 
 
-
-
-    elif ROI :
-        if not posXatteint:
-            posX+=30*deplacementvers(posX,posXfinal) # il faut fixer la vitesse
-        if not posYatteint:
-            posY+=deplacementvers(posY,posYfinal)
-        if not lectureAtteint:
-            lecture+=deplacementvers(lecture,lecturefinal)
-        posXatteint = posX == posXfinal
-        posYatteint = posY == posYfinal
-        lectureAtteint = lecture == lecturefinal
-
-
-
     img = frame_list[lecture]
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]
 
@@ -274,10 +249,6 @@ while running:
 
 
 
-    """Si on affiche les images trop vite par rapport au framerate voulu, on fait une pause"""
-    temps_fin_calcul_fps_continu = time.time()
-
-    temps_debut_calcul_fps_continu = time.time()
 
 
 

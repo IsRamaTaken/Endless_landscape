@@ -1,4 +1,4 @@
-import time
+
 from random import randint
 from preparation_video import *
 
