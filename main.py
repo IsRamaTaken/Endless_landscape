@@ -8,17 +8,9 @@ from zoom import *
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
-from ROI import *
 from fonction import *
 
-#ROI
-posXfinal=900
-posYfinal=600
-lecturefinal=20
-posXatteint=posX==posXfinal
-posYatteint=posY==posYfinal
-lectureAtteint=lecture==lecturefinal
-ROI=False
+
 
 from deplacement_souris import *
 
@@ -209,16 +201,6 @@ while running:
 
 
 
-    elif ROI :
-        if not posXatteint:
-            posX+=30*deplacementvers(posX,posXfinal) # il faut fixer la vitesse
-        if not posYatteint:
-            posY+=deplacementvers(posY,posYfinal)
-        if not lectureAtteint:
-            lecture+=deplacementvers(lecture,lecturefinal)
-        posXatteint = posX == posXfinal
-        posYatteint = posY == posYfinal
-        lectureAtteint = lecture == lecturefinal
 
 
 
