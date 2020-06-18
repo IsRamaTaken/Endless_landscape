@@ -1,6 +1,6 @@
 import numpy as np
 from deplacement_tete_de_lecture import deplacement_t, changement_proba
-from cadre_manuel import deplacement_manuel
+from cadre_manuel import deplacement_manuel, chgmt_indice_vitesse_manuel
 from cadre_automatique import deplacement_automatique_x_y
 
 from zoom import *
@@ -146,9 +146,13 @@ while running:
     if choix_cadre:
         if type_deplacement_cadre:
             arret_x,arret_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y= \
-                deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_x, posY,
-                                   sens_deplacement_y, limite_up_y, size_window_y, vitesse_y, pos_x_reel, pos_y_reel, keys,
+                deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_actuelle_x, posY,
+                                   sens_deplacement_y, limite_up_y, size_window_y, vitesse_actuelle_y, pos_x_reel, pos_y_reel, keys,
                                    input_map)
+
+            indice_vitesse_x, indice_vitesse_y, vitesse_initiale_x, vitesse_initiale_y,\
+                    chgmt_vitesse_x_en_cours, chgmt_vitesse_y_en_cours = chgmt_indice_vitesse_manuel(indice_vitesse_x, indice_vitesse_y, vitesse_x, vitesse_y, chgmt_vitesse_x_en_cours, chgmt_vitesse_y_en_cours, keys, input_map, vitesse_initiale_x, vitesse_initiale_y)
+            
 
         else:
             if not arret_x:
@@ -160,10 +164,15 @@ while running:
                     probabilite_changement_selon_direction_x, temps_x_changement,compteur_de_frame)
                 
                 
-                indice_vitesse_x, temps_chgmt_indice_x = changement_proba(
-                        temps_chgmt_indice_x, temps_min_chgmt_vitesse_x, indice_vitesse_x, vitesse_x,compteur_de_frame)
-                vitesse_actuelle_x = vitesse_x[indice_vitesse_x]
-
+                if not chgmt_vitesse_x_en_cours:
+                    indice_vitesse_x, temps_chgmt_indice_x = changement_proba(
+                            temps_chgmt_indice_x, temps_min_chgmt_vitesse_x, indice_vitesse_x, vitesse_x,compteur_de_frame)
+                    
+                    if vitesse_x[indice_vitesse_x] != vitesse_actuelle_x:
+                        chgmt_vitesse_x_en_cours = True
+                        temps_chgmt_indice_x += vitesse_changement_vitesse_x
+                        vitesse_initiale_x = vitesse_actuelle_x
+                        frame_chgmt_x = compteur_de_frame
 
             if not arret_y:
                 posY, pos_y_reel,  sens_deplacement_y, direction_deplacement_y, bord_atteint_y, \
@@ -174,13 +183,28 @@ while running:
                     probabilite_changement_selon_direction_y, temps_y_changement,compteur_de_frame)
 
 
-                indice_vitesse_y, temps_chgmt_indice_y = changement_proba(
-                        temps_chgmt_indice_y, temps_min_chgmt_vitesse_y, indice_vitesse_y, vitesse_y,compteur_de_frame)
-                vitesse_actuelle_y = vitesse_y[indice_vitesse_y]           
+                if not chgmt_vitesse_y_en_cours:
+                    indice_vitesse_y, temps_chgmt_indice_y = changement_proba(
+                            temps_chgmt_indice_y, temps_min_chgmt_vitesse_y, indice_vitesse_y, vitesse_y,compteur_de_frame)
+
+                    
+                    if vitesse_y[indice_vitesse_y] != vitesse_actuelle_y:
+                        temps_chgmt_indice_y += vitesse_changement_vitesse_y
+                        chgmt_vitesse_y_en_cours =  True
+                        vitesse_initiale_y = vitesse_actuelle_y
+                        frame_chgmt_y = compteur_de_frame
+                           
+        if chgmt_vitesse_x_en_cours:
+                vitesse_actuelle_x, chgmt_vitesse_x_en_cours = chgmt_vitesse(vitesse_actuelle_x, vitesse_x,\
+                    indice_vitesse_x, chgmt_vitesse_x_en_cours, vitesse_changement_vitesse_x, vitesse_initiale_x, frame_chgmt_x, compteur_de_frame)
 
 
+        if chgmt_vitesse_y_en_cours:
+            vitesse_actuelle_y, chgmt_vitesse_y_en_cours = chgmt_vitesse(vitesse_actuelle_y, vitesse_y,\
+            indice_vitesse_y, chgmt_vitesse_y_en_cours, vitesse_changement_vitesse_y, vitesse_initiale_y, frame_chgmt_y, compteur_de_frame)
 
-    print(vitesse_actuelle_x, vitesse_actuelle_y)
+
+    print(indice_vitesse_x, indice_vitesse_y)
 
 
     if choix_t:
@@ -226,8 +250,6 @@ while running:
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]
 
     img = cv2.resize(img, (size_x, size_y))
-
-    compteur_de_frame += 1
     
     """On ajoute l'image a la vidéo enregistrée si on a choisit de le faire"""
     if enregistrement:

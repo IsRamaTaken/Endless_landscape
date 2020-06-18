@@ -6,18 +6,34 @@ from preparation_video import *
 lecture = randint(0, nombre_de_frame-1)
 indice_proba = 0
 
+
+""" Initialisation des paramètres de la vitesse de déplacement du cadre """
+
 # Initialisation de l'indice de la vitesse de  déplacement du cadre:
 
 indice_vitesse_x = randint(0, len(vitesse_x)-1)
 indice_vitesse_y = randint(0, len(vitesse_y)-1)
 
-# Initialisation des vitesses actuelles en x et y:
+# Initialisation des vitesses actuelles et initiales en x et y:
 vitesse_actuelle_x = vitesse_x[indice_vitesse_x]
 vitesse_actuelle_y = vitesse_y[indice_vitesse_y]
+vitesse_initiale_x = vitesse_actuelle_x
+vitesse_initiale_y = vitesse_actuelle_y
 
 # Initialisation du temps entre chaque changement de vitesse :
 temps_chgmt_indice_x = 0
 temps_chgmt_indice_y = 0
+
+# Initialisation des variables de suivi du changement de vitesse
+chgmt_vitesse_x_en_cours = False
+chgmt_vitesse_y_en_cours = False
+
+# Initialisation des premières frames pour le changement de vitesse
+frame_chgmt_x = 0
+frame_chgmt_y = 0
+
+""" Fin de l'initialisation des paramètres de la vitesse de déplacement du cadre """
+
 
 #Initialisation de la taille de la fenêtre
 size_window_x = size_x

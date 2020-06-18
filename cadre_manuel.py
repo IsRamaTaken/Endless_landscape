@@ -36,3 +36,77 @@ def deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, s
         posY = limite_up_y - size_window_y // 2
 
     return arret_x,arret_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y
+
+
+
+def chgmt_indice_vitesse_manuel(indice_vitesse_x, indice_vitesse_y, vitesse_x, vitesse_y,chgmt_vitesse_x_en_cours, chgmt_vitesse_y_en_cours, keys, input_map, vitesse_initiale_x, vitesse_initiale_y):
+    if not chgmt_vitesse_x_en_cours:
+        if keys[input_map["vitesse_x_+"]]:
+            if indice_vitesse_x != len(vitesse_x) -1:
+                vitesse_initiale_x = vitesse_x[indice_vitesse_x]
+                indice_vitesse_x += 1
+                chgmt_vitesse_x_en_cours = True
+        elif keys[input_map["vitesse_x_-"]]:
+            if indice_vitesse_x != 0:
+                vitesse_initiale_x = vitesse_x[indice_vitesse_x]
+                indice_vitesse_x -= 1
+                chgmt_vitesse_x_en_cours = True
+    
+    if not chgmt_vitesse_y_en_cours:
+        if keys[input_map["vitesse_y_+"]]:
+            if indice_vitesse_y != len(vitesse_y) -1:
+                vitesse_initiale_y = vitesse_y[indice_vitesse_y]
+                indice_vitesse_y += 1
+                chgmt_vitesse_y_en_cours = True
+        elif keys[input_map["vitesse_y_-"]]:
+            if indice_vitesse_y != 0:
+                vitesse_initiale_y = vitesse_y[indice_vitesse_y]
+                indice_vitesse_y -= 1
+                chgmt_vitesse_y_en_cours = True
+    return indice_vitesse_x, indice_vitesse_y, vitesse_initiale_x, vitesse_initiale_y, chgmt_vitesse_x_en_cours, chgmt_vitesse_y_en_cours
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

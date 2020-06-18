@@ -37,6 +37,9 @@ for i in range(len(vitesse_y)):
 temps_min_chgmt_vitesse_x = config.getfloat("cadre", "temps_min_chgmt_vitesse_x")
 temps_min_chgmt_vitesse_y = config.getfloat("cadre", "temps_min_chgmt_vitesse_y")
 
+vitesse_changement_vitesse_x = config.getint("cadre", "vitesse_changement_vitesse_x")
+vitesse_changement_vitesse_y = config.getint("cadre", "vitesse_changement_vitesse_y")
+
 temps_min_x = config.getint("cadre", "temps_min_x")
 temps_max_x = config.getint("cadre", "temps_max_x")
 temps_min_y = config.getint("cadre", "temps_min_y")
@@ -102,6 +105,14 @@ for i in range(len(vitesse_x)):
     vitesse_x[i] = int( vitesse_x[i] / framerate)
 for i in range(len(vitesse_y)):
     vitesse_y[i] = int( vitesse_y[i] / framerate)
+
+# On s'assure que les listes soient bien dans un ordre croissant
+vitesse_y.sort()
+vitesse_x.sort()
+
+vitesse_changement_vitesse_x = int(vitesse_changement_vitesse_x * framerate)
+vitesse_changement_vitesse_y = int(vitesse_changement_vitesse_y * framerate)
+
 temps_min_chgmt_vitesse_x = int( temps_min_chgmt_vitesse_x * framerate)
 temps_min_chgmt_vitesse_y = int( temps_min_chgmt_vitesse_y * framerate)
 temps_min_x *= framerate
@@ -124,9 +135,3 @@ attente_max *= framerate
 
 nb_frame_min_changement_lecture = int(temps_min_changement_t * framerate)
 
-
-
-
-
-
-print(vitesse_x, vitesse_y)

@@ -21,3 +21,27 @@ def changement_proba(temps_changement_proba,temps_entre_changement_proba, indice
         indice_proba = randint(0,len(liste_proba)-1)
     return indice_proba, temps_changement_proba
 
+
+def chgmt_vitesse(vitesse_actuelle, liste_vitesse, indice_vitesse, chgmt_vitesse_en_cours, vitesse_changement_vitesse, vitesse_initiale, frame_chgmt, compteur_de_frame):
+    
+    avancement = 0
+    nb = 1
+    while avancement == 0:
+        avancement = int(nb * (liste_vitesse[indice_vitesse] - vitesse_initiale) / vitesse_changement_vitesse)
+        nb += 1
+
+    if (frame_chgmt + vitesse_changement_vitesse - compteur_de_frame) % nb == 0:
+        vitesse_actuelle += avancement
+
+    if avancement < 0:
+        if vitesse_actuelle < liste_vitesse[indice_vitesse] - avancement:
+            vitesse_actuelle = liste_vitesse[indice_vitesse]
+            chgmt_vitesse_en_cours = False
+
+    if avancement > 0:
+        if vitesse_actuelle > liste_vitesse[indice_vitesse] - avancement:
+            vitesse_actuelle = liste_vitesse[indice_vitesse]
+            chgmt_vitesse_en_cours = False
+
+    return vitesse_actuelle, chgmt_vitesse_en_cours
+
