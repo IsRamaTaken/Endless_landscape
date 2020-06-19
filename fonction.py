@@ -48,5 +48,5 @@ def chgmt_vitesse(vitesse_actuelle, liste_vitesse, indice_vitesse, chgmt_vitesse
 
 
 def saut_image(vitesse_x,vitesse_y,pos_xdebut,pos_ydebut,posx,posy,seuil=0.0001):
-    return ( abs(abs(pos_xdebut-posx)-vitesse_x)>seuil )or ( abs(abs(pos_ydebut-posx)-vitesse_y)>seuil )
+    return ( abs(abs(pos_xdebut-posx)-vitesse_x)>seuil )or ( abs(abs(pos_ydebut-posy)-vitesse_y)>seuil )
 
