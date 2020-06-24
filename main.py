@@ -164,6 +164,8 @@ while running:
                         temps_chgmt_indice_x += temps_changement_vitesse_x
                         vitesse_initiale_x = vitesse_actuelle_x
                         frame_chgmt_x = compteur_de_frame
+                        diff_vitesse_x = abs( vitesse_x[indice_vitesse_x] - vitesse_initiale_x)
+                        nb_frame_incrementation_vitesse_x = temps_changement_vitesse_x // diff_vitesse_x
 
             if not arret_y:
                 posY, pos_y_reel,  sens_deplacement_y, direction_deplacement_y, bord_atteint_y, \
@@ -184,16 +186,21 @@ while running:
                         chgmt_vitesse_y_en_cours =  True
                         vitesse_initiale_y = vitesse_actuelle_y
                         frame_chgmt_y = compteur_de_frame
+                        diff_vitesse_y = abs( vitesse_y[indice_vitesse_y] - vitesse_initiale_y)
+                        nb_frame_incrementation_vitesse_y = temps_changement_vitesse_y // diff_vitesse_y
                            
         if chgmt_vitesse_x_en_cours:
                 vitesse_actuelle_x, chgmt_vitesse_x_en_cours = chgmt_vitesse(vitesse_actuelle_x, vitesse_x,\
-                    indice_vitesse_x, chgmt_vitesse_x_en_cours, temps_changement_vitesse_x, vitesse_initiale_x, frame_chgmt_x, compteur_de_frame)
+                    indice_vitesse_x, chgmt_vitesse_x_en_cours, temps_changement_vitesse_x, vitesse_initiale_x, frame_chgmt_x, compteur_de_frame, nb_frame_incrementation_vitesse_x)
 
 
         if chgmt_vitesse_y_en_cours:
             vitesse_actuelle_y, chgmt_vitesse_y_en_cours = chgmt_vitesse(vitesse_actuelle_y, vitesse_y,\
-                    indice_vitesse_y, chgmt_vitesse_y_en_cours, temps_changement_vitesse_y, vitesse_initiale_y, frame_chgmt_y, compteur_de_frame)
+                   indice_vitesse_y, chgmt_vitesse_y_en_cours, temps_changement_vitesse_y, vitesse_initiale_y, frame_chgmt_y, compteur_de_frame, nb_frame_incrementation_vitesse_y)
 
+
+
+    """ Déplacement de la tete de lecture"""
 
     if choix_t:
         if not type_deplacement_tete:
@@ -243,7 +250,6 @@ while running:
     compteur_de_frame+=1
 
     #plt.plot(posX,posY,'-o')
-
 
 
 

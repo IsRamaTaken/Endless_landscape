@@ -32,6 +32,15 @@ chgmt_vitesse_y_en_cours = False
 frame_chgmt_x = 0
 frame_chgmt_y = 0
 
+# Initialisation des valeurs du nombre de frame toute les combiens il faut incrémenter la valeur de 
+# la vitesse de déplacement du cadre lors d'un changement de vitesse (pour un changement progressif)
+
+nb_frame_incrementation_vitesse_x = 1
+nb_frame_incrementation_vitesse_y = 1
+
+diff_vitesse_x = 0
+diff_vitesse_y = 0
+
 """ Fin de l'initialisation des paramètres de la vitesse de déplacement du cadre """
 
 
