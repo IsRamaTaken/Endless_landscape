@@ -103,8 +103,12 @@ if not os.path.isabs(path):
 
 for i in range(len(vitesse_x)):
     vitesse_x[i] = int( vitesse_x[i] / framerate)
+    if vitesse_x[i] <= 0:
+        vitesse_x[i] = 1
 for i in range(len(vitesse_y)):
     vitesse_y[i] = int( vitesse_y[i] / framerate)
+    if vitesse_y[i] <= 0:
+        vitesse_y[i] = 1
 
 # On s'assure que les listes soient bien dans un ordre croissant
 vitesse_y.sort()
