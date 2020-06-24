@@ -37,13 +37,13 @@ for i in range(len(vitesse_y)):
 temps_min_chgmt_vitesse_x = config.getfloat("cadre", "temps_min_chgmt_vitesse_x")
 temps_min_chgmt_vitesse_y = config.getfloat("cadre", "temps_min_chgmt_vitesse_y")
 
-vitesse_changement_vitesse_x = config.getint("cadre", "vitesse_changement_vitesse_x")
-vitesse_changement_vitesse_y = config.getint("cadre", "vitesse_changement_vitesse_y")
+vitesse_changement_vitesse_x = config.getint("cadre", "temps_changement_vitesse_x")
+vitesse_changement_vitesse_y = config.getint("cadre", "temps_changement_vitesse_y")
 
-temps_min_x = config.getint("cadre", "temps_min_x")
-temps_max_x = config.getint("cadre", "temps_max_x")
-temps_min_y = config.getint("cadre", "temps_min_y")
-temps_max_y = config.getint("cadre", "temps_max_y")
+temps_min_x = config.getfloat("cadre", "temps_min_x")
+temps_max_x = config.getfloat("cadre", "temps_max_x")
+temps_min_y = config.getfloat("cadre", "temps_min_y")
+temps_max_y = config.getfloat("cadre", "temps_max_y")
 probabilite_changement_sens_x = config.getfloat("cadre", "probabilite_changement_sens_x")
 probabilite_changement_selon_direction_x = config.getfloat("cadre", "probabilite_changement_selon_direction_x")
 temps_min_changement_x = config.getint("cadre", "temps_min_changement_x")
@@ -115,10 +115,10 @@ vitesse_changement_vitesse_y = int(vitesse_changement_vitesse_y * framerate)
 
 temps_min_chgmt_vitesse_x = int( temps_min_chgmt_vitesse_x * framerate)
 temps_min_chgmt_vitesse_y = int( temps_min_chgmt_vitesse_y * framerate)
-temps_min_x *= framerate
-temps_max_x *= framerate
-temps_min_y *= framerate
-temps_max_y *= framerate
+temps_min_x = int(temps_min_x * framerate)
+temps_max_x = int(temps_max_x * framerate)
+temps_min_y = int(temps_min_y * framerate)
+temps_max_y = int(temps_max_y * framerate)
 temps_min_changement_x *= framerate
 temps_min_changement_y *= framerate
 

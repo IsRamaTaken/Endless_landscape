@@ -27,6 +27,7 @@ if fullscreen:
 
     # On déplace la souris de telle maniere a ne plus la voir:
     deplacement_souris()
+
 pygame.key.set_repeat(100, 100)
 
 running = True
