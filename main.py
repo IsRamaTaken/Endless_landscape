@@ -161,7 +161,7 @@ while running:
                     
                     if vitesse_x[indice_vitesse_x] != vitesse_actuelle_x:
                         chgmt_vitesse_x_en_cours = True
-                        temps_chgmt_indice_x += vitesse_changement_vitesse_x
+                        temps_chgmt_indice_x += temps_changement_vitesse_x
                         vitesse_initiale_x = vitesse_actuelle_x
                         frame_chgmt_x = compteur_de_frame
 
@@ -180,19 +180,19 @@ while running:
 
                     
                     if vitesse_y[indice_vitesse_y] != vitesse_actuelle_y:
-                        temps_chgmt_indice_y += vitesse_changement_vitesse_y
+                        temps_chgmt_indice_y += temps_changement_vitesse_y
                         chgmt_vitesse_y_en_cours =  True
                         vitesse_initiale_y = vitesse_actuelle_y
                         frame_chgmt_y = compteur_de_frame
                            
         if chgmt_vitesse_x_en_cours:
                 vitesse_actuelle_x, chgmt_vitesse_x_en_cours = chgmt_vitesse(vitesse_actuelle_x, vitesse_x,\
-                    indice_vitesse_x, chgmt_vitesse_x_en_cours, vitesse_changement_vitesse_x, vitesse_initiale_x, frame_chgmt_x, compteur_de_frame)
+                    indice_vitesse_x, chgmt_vitesse_x_en_cours, temps_changement_vitesse_x, vitesse_initiale_x, frame_chgmt_x, compteur_de_frame)
 
 
         if chgmt_vitesse_y_en_cours:
             vitesse_actuelle_y, chgmt_vitesse_y_en_cours = chgmt_vitesse(vitesse_actuelle_y, vitesse_y,\
-            indice_vitesse_y, chgmt_vitesse_y_en_cours, vitesse_changement_vitesse_y, vitesse_initiale_y, frame_chgmt_y, compteur_de_frame)
+                    indice_vitesse_y, chgmt_vitesse_y_en_cours, temps_changement_vitesse_y, vitesse_initiale_y, frame_chgmt_y, compteur_de_frame)
 
 
     if choix_t:

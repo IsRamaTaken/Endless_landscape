@@ -37,8 +37,8 @@ for i in range(len(vitesse_y)):
 temps_min_chgmt_vitesse_x = config.getfloat("cadre", "temps_min_chgmt_vitesse_x")
 temps_min_chgmt_vitesse_y = config.getfloat("cadre", "temps_min_chgmt_vitesse_y")
 
-vitesse_changement_vitesse_x = config.getint("cadre", "temps_changement_vitesse_x")
-vitesse_changement_vitesse_y = config.getint("cadre", "temps_changement_vitesse_y")
+temps_changement_vitesse_x = config.getint("cadre", "temps_changement_vitesse_x")
+temps_changement_vitesse_y = config.getint("cadre", "temps_changement_vitesse_y")
 
 temps_min_x = config.getfloat("cadre", "temps_min_x")
 temps_max_x = config.getfloat("cadre", "temps_max_x")
@@ -109,9 +109,8 @@ for i in range(len(vitesse_y)):
 # On s'assure que les listes soient bien dans un ordre croissant
 vitesse_y.sort()
 vitesse_x.sort()
-
-vitesse_changement_vitesse_x = int(vitesse_changement_vitesse_x * framerate)
-vitesse_changement_vitesse_y = int(vitesse_changement_vitesse_y * framerate)
+temps_changement_vitesse_x = int(temps_changement_vitesse_x * framerate)
+temps_changement_vitesse_y = int(temps_changement_vitesse_y * framerate)
 
 temps_min_chgmt_vitesse_x = int( temps_min_chgmt_vitesse_x * framerate)
 temps_min_chgmt_vitesse_y = int( temps_min_chgmt_vitesse_y * framerate)
