@@ -1,22 +1,27 @@
 import configparser
 import os
 
-#On lit le fichier de configuration:
+# On lit le fichier de configuration:
 config = configparser.ConfigParser(allow_no_value=True)
 config.read(os.path.join(os.path.dirname(__file__), "config.ini"))
 
-#On vérifie que le fichier n'est pas vide
+# On vérifie que le fichier n'est pas vide
 if config.sections() == []:
     print("!!!! Le fichier config.ini n'arrive pas a etre lu ou est vide !!!!")
 
 
 """On initialise différentes valeurs à partir du fichier de configuration:"""
 
-#Pour la vidéo d'origine:
+# Pour la vidéo d'origine:
 limitation_nombre_de_frame = config.getint("input_video", "limitation_nombre_de_frame")
 path = config.get("input_video", "video")
 
-#Pour le cadre:
+
+# Pour les points d'interets (ROI):
+
+choix_ROI = config.getboolean("points d'interets", "choix_ROI")
+
+# Pour le cadre:
 choix_cadre = config.getboolean("cadre", "choix_cadre")
 manuel_auto = 0
 type_deplacement_cadre = manuel_auto
@@ -54,7 +59,7 @@ temps_min_changement_y = config.getint("cadre", "temps_min_changement_y")
 temps_arret_x = config.getint("cadre", "temps_arret_x")
 temps_arret_y = config.getint("cadre", "temps_arret_y")
 
-#ZOOM
+# ZOOM
 choix_zoom_ou_non = config.getboolean("ZOOM", "zoom_ou_non")
 type_zoom = manuel_auto
 vzoom = config.getfloat("ZOOM", "vitesse de zoom")
@@ -64,7 +69,7 @@ zmax=config.getfloat("ZOOM", "zoom_max")
 probaZoom=config.getfloat("ZOOM", "probaZoom")
 probaDezoom=config.getfloat("ZOOM", "probaDezoom")
 
-#Pour la tete de lecture:
+# Pour la tete de lecture:
 liste_proba = config.get("tete_de_lecture", "liste_proba")
 liste_proba = liste_proba.split()
 for i in range(len(liste_proba)):
@@ -75,7 +80,7 @@ type_deplacement_tete = manuel_auto
 probabilite_changement_selon_direction_t = config.getfloat("tete_de_lecture", "probabilite_changement_selon_direction_t")
 temps_min_changement_t = config.getfloat("tete_de_lecture", "temps_min_changement_t")
 
-#Pour l'output vidéo:
+# Pour l'output vidéo:
 enregistrement = config.getboolean("output_video", "enregistrement")
 output_file = config.get("output_video", "output_file")
 codec = config.get("output_video", "codec")
@@ -83,7 +88,7 @@ framerate = config.getint("output_video", "framerate")
 fullscreen = config.getboolean("output_video", "fullscreen")
 sens = config.getint("output_video", "sens")
 
-#Pour les inputs clavier:
+# Pour les inputs clavier:
 
 key_config = configparser.ConfigParser(allow_no_value=True)
 key_config.read(os.path.join(os.path.dirname(__file__), "key.ini"))
@@ -93,13 +98,23 @@ for key in input_map:
 
 """  Fin de l'importation de paramètres  """
 
-#Si le chemin n'est pas absolu, on le complète pour qu'il le soit
+# Si le chemin n'est pas absolu, on le complète pour qu'il le soit
 if not os.path.isabs(path):
     path = os.path.join(os.path.dirname(__file__), path)
 
+
+
+# Si l'on a choisit le déplacement vers les points d'interets, on enleve le déplacement du cadre et
+# de la tete de lecture:
+
+if choix_ROI:
+    choix_cadre = False
+    choix_lecture = False
+
+
 # conversion du temps seconde en image
 
-#Pour le cadre:
+# Pour le cadre:
 
 for i in range(len(vitesse_x)):
     vitesse_x[i] = int( vitesse_x[i] / framerate)
@@ -128,13 +143,13 @@ temps_min_changement_y *= framerate
 temps_arret_x *=framerate
 temps_arret_y *= framerate
 
-#ZOOM
+# ZOOM
 
 vzoom /=framerate
 attente_min *= framerate
 attente_max *= framerate
 
-#Pour la tete de lecture:
+# Pour la tete de lecture:
 
 nb_frame_min_changement_lecture = int(temps_min_changement_t * framerate)
 
