@@ -8,7 +8,6 @@ from zoom import *
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
-
 from fonction import *
 from deplacement_souris import *
 
@@ -223,8 +222,6 @@ while running:
             sens_lecture = -1
             direction_lecture = -1
         
-
-
 
     img = frame_list[lecture]
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]
