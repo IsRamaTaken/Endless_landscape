@@ -16,11 +16,10 @@ from ROI import *
 
 # ROI
 
+liste_cible = [(900,600,25), (900,600,45)]
+lecture_cible = 25
 posXcible = 900
 posYcible = 600
-
-lecture_cible = 25
-
 # Initialisation
 posXatteint = (posX == posXcible)
 posYatteint = (posY == posYcible)
@@ -243,9 +242,11 @@ while running:
             
             lecture += sens_lecture
             if lecture <= amplitude_min:
+                lecture = amplitude_min
                 sens_lecture = 1
                 direction_lecture = 1
             elif lecture >= amplitude_max:
+                lecture = amplitude_max
                 sens_lecture = -1
                 direction_lecture = -1
 
@@ -255,7 +256,7 @@ while running:
             if lecture_atteint:
                 amplitude_min = max(0, lecture_cible - amplitude_tete_de_lecture)
                 amplitude_max = min(nombre_de_frame - 1, lecture_cible + amplitude_tete_de_lecture)
-                print(amplitude_max, amplitude_min)
+                print(amplitude_min, amplitude_max)
     
     
     print(lecture)
