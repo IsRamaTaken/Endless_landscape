@@ -5,10 +5,10 @@ from fonction import *
 
 
 def deplacement_t(frame_lecture, lecture, direction_lecture, nombre_de_frame,
-                  sens_lecture, nb_frame_min_changement_lecture, probabilite_direction, liste_proba, indice_proba, compteur_de_frame):
+                  sens_lecture, nb_frame_min_changement_lecture, probabilite_direction, liste_proba, indice_proba, compteur_de_frame, lecture_min, lecture_max):
 
         duree_lecture_changement = compteur_de_frame - frame_lecture
-        if lecture >= 0 and lecture <= nombre_de_frame - 1 and \
+        if lecture >= lecture_min and lecture <= lecture_max and \
                 duree_lecture_changement > nb_frame_min_changement_lecture:
 
                 # Tirage tête de lecture

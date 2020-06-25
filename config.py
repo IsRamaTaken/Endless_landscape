@@ -109,7 +109,7 @@ if not os.path.isabs(path):
 
 if choix_ROI:
     choix_cadre = False
-    choix_lecture = False
+    choix_t = False
 
 
 # conversion du temps seconde en image
