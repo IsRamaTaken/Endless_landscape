@@ -173,4 +173,11 @@ else:
     accroche_x = (modes[0][0] - size_y) / 2
     accroche_y = (modes[0][1] - size_x) / 2
 
+
+""" Initialisation des paramètres relatifs au ROI """
+amplitude_min = 0
+amplitude_max = nombre_de_frame - 1
+""" Fin de l'initialisation du ROI"""
+
+
 """   Fin de l'initialisation   """

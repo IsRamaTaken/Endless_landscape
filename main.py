@@ -10,10 +10,26 @@ from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
 from fonction import *
 from deplacement_souris import *
+from ROI import *
 
-listposX=[]
-listposY=[]
-listtemps=[]
+
+
+# ROI
+
+posXcible = 900
+posYcible = 600
+
+lecture_cible = 25
+
+# Initialisation
+posXatteint = (posX == posXcible)
+posYatteint = (posY == posYcible)
+lecture_atteint = (lecture == lecture_cible)
+print("lecture atteint : ", lecture_atteint)
+
+
+
+
 
 if sens % 2 == 0:
     screen = pygame.display.set_mode((size_y, size_x))
@@ -35,10 +51,6 @@ running = True
 """   Début de la boucle infini de choix d'image et d'affichage   """
 
 clock = pygame.time.Clock()
-
-#plt.ion()
-#plt.title('trajectoire du cadre')
-
 
 
 while running:
@@ -204,7 +216,7 @@ while running:
     if choix_t:
         if not type_deplacement_tete:
             lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
-                    frame_lecture, lecture, direction_lecture, nombre_de_frame, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, 0, nombre_de_frame - 1)
+                    frame_lecture, lecture, direction_lecture, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, 0, nombre_de_frame - 1)
             indice_proba, temps_changement_proba = changement_proba(
                 temps_changement_proba, temps_entre_changement_proba, indice_proba, liste_proba,compteur_de_frame)
 
@@ -221,8 +233,33 @@ while running:
             lecture = nombre_de_frame - 1
             sens_lecture = -1
             direction_lecture = -1
-        
 
+    # Déplacement de la tete de lecture dans le cas du déplacement vers les points d'interets:
+    elif choix_ROI:
+        if lecture_atteint: # Quand on atteint la lecture cible, on tourne autours
+            
+            lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
+                    frame_lecture, lecture, direction_lecture, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, amplitude_min, amplitude_max)
+            
+            lecture += sens_lecture
+            if lecture <= amplitude_min:
+                sens_lecture = 1
+                direction_lecture = 1
+            elif lecture >= amplitude_max:
+                sens_lecture = -1
+                direction_lecture = -1
+
+        if not lecture_atteint: # Tant qu'on a pas atteint la lecture ciblée
+            lecture += deplacement_vers(lecture, lecture_cible)
+            lecture_atteint = (lecture == lecture_cible)
+            if lecture_atteint:
+                amplitude_min = max(0, lecture_cible - amplitude_tete_de_lecture)
+                amplitude_max = min(nombre_de_frame - 1, lecture_cible + amplitude_tete_de_lecture)
+                print(amplitude_max, amplitude_min)
+    
+    
+    print(lecture)
+    
     img = frame_list[lecture]
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]
 
@@ -246,18 +283,7 @@ while running:
     pygame.display.update()
     compteur_de_frame+=1
 
-    #plt.plot(posX,posY,'-o')
-
-
-
-
-
-
-#plt.plot(listposX,listposY,'-v')
-#plt.show()
 
 cv2.destroyAllWindows()
 pygame.quit()
-print(clock.get_fps())
-
 

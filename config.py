@@ -20,6 +20,9 @@ path = config.get("input_video", "video")
 # Pour les points d'interets (ROI):
 
 choix_ROI = config.getboolean("points d'interets", "choix_ROI")
+amplitude_tete_de_lecture = config.getint("points d'interets", "amplitude_tete_de_lecture")
+
+
 
 # Pour le cadre:
 choix_cadre = config.getboolean("cadre", "choix_cadre")

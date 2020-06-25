@@ -4,9 +4,9 @@ from fonction import *
 
 
 
-def deplacement_t(frame_lecture, lecture, direction_lecture, nombre_de_frame,
+def deplacement_t(frame_lecture, lecture, direction_lecture,
                   sens_lecture, nb_frame_min_changement_lecture, probabilite_direction, liste_proba, indice_proba, compteur_de_frame, lecture_min, lecture_max):
-
+        
         duree_lecture_changement = compteur_de_frame - frame_lecture
         if lecture >= lecture_min and lecture <= lecture_max and \
                 duree_lecture_changement > nb_frame_min_changement_lecture:

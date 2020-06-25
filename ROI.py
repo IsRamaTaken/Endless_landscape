@@ -1,13 +1,5 @@
-# ROI
+from fonction import *
 
-posXcible = 900
-posYcible = 600
-
-lecture_cible = 20
-
-# Initialisation
-posXatteint = (posX == posXcible)
-posYatteint = (posY == posYcible)
-lecture_atteint = (lecture == lecture_cible)
-
-
+def deplacement_vers(pos_init, pos_final):
+    # Donne la direction a prendre  pour aller la position finale
+    return signe(pos_final - pos_init)
