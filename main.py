@@ -16,7 +16,7 @@ from ROI import *
 
 # ROI
 
-liste_cible = [(900,600,25), (900,600,45)]
+liste_cible = [(900,600,25), (1500,500,45)]
 lecture_cible = 25
 posXcible = 900
 posYcible = 600
@@ -24,9 +24,6 @@ posYcible = 600
 posXatteint = (posX == posXcible)
 posYatteint = (posY == posYcible)
 lecture_atteint = (lecture == lecture_cible)
-print("lecture atteint : ", lecture_atteint)
-
-
 
 
 
@@ -233,9 +230,37 @@ while running:
             sens_lecture = -1
             direction_lecture = -1
 
-    # Déplacement de la tete de lecture dans le cas du déplacement vers les points d'interets:
-    elif choix_ROI:
-        if lecture_atteint: # Quand on atteint la lecture cible, on tourne autours
+    # Déplacement de la tete de lecture et du cadre dans le cas du déplacement vers les points d'interets:
+    if choix_ROI:
+
+        
+        if not posXatteint and not ROI_en_attente:
+            posX += deplacement_vers(posX, posXcible) * vitesse_actuelle_x
+            if abs(posX - posXcible) <= vitesse_actuelle_x:
+                posX = posXcible
+            posXatteint = (posX == posXcible)
+
+        if not posYatteint and not ROI_en_attente:
+            posY += deplacement_vers(posY, posYcible) * vitesse_actuelle_y
+            if abs(posY - posYcible) <= vitesse_actuelle_y:
+                posY = posYcible
+
+            posYatteint = (posY == posYcible)
+
+
+
+
+
+        if not lecture_atteint and not ROI_en_attente: # Tant qu'on a pas atteint la lecture ciblée
+            lecture += deplacement_vers(lecture, lecture_cible)
+            lecture_atteint = (lecture == lecture_cible)
+            if lecture_atteint:
+                amplitude_min = max(0, lecture_cible - amplitude_tete_de_lecture)
+                amplitude_max = min(nombre_de_frame - 1, lecture_cible + amplitude_tete_de_lecture)
+                print("lecture cible", lecture, "amplitude min : ", amplitude_min, "amplitude max : ", amplitude_max)
+
+
+        if lecture_atteint or ROI_en_attente: # Quand on atteint la lecture cible, on tourne autours
             
             lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
                     frame_lecture, lecture, direction_lecture, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, amplitude_min, amplitude_max)
@@ -249,18 +274,35 @@ while running:
                 lecture = amplitude_max
                 sens_lecture = -1
                 direction_lecture = -1
-
-        if not lecture_atteint: # Tant qu'on a pas atteint la lecture ciblée
-            lecture += deplacement_vers(lecture, lecture_cible)
+        
+        # On vérifie si on vient d'atteindre le point d'interet:
+        if lecture_atteint and posXatteint and posYatteint:
+            posXcible, posYcible, lecture_cible, temps_ROI_arrive, temps_ROI, ROI_en_attente = changement_cible(liste_cible, temps_ROI, temps_ROI_min, temps_ROI_max, compteur_de_frame)
+            
             lecture_atteint = (lecture == lecture_cible)
-            if lecture_atteint:
-                amplitude_min = max(0, lecture_cible - amplitude_tete_de_lecture)
-                amplitude_max = min(nombre_de_frame - 1, lecture_cible + amplitude_tete_de_lecture)
-                print(amplitude_min, amplitude_max)
+            posXatteint = (posX == posXcible)
+            posYatteint = (posY == posYcible)
+
+
+
+
+
+        if compteur_de_frame >= temps_ROI_arrive + temps_ROI:
+            # On a attendu suffisament longtemps
+            ROI_en_attente = False
+
+
+
+
+
+
+    print(posX, posY, lecture, lecture_cible, "ROI_en_attente", ROI_en_attente, "lecture_atteinte", lecture_atteint)
     
-    
-    print(lecture)
-    
+
+
+
+
+
     img = frame_list[lecture]
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]
 

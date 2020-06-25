@@ -20,6 +20,8 @@ path = config.get("input_video", "video")
 # Pour les points d'interets (ROI):
 
 choix_ROI = config.getboolean("points d'interets", "choix_ROI")
+temps_ROI_min = config.getfloat("points d'interets", "temps_ROI_min")
+temps_ROI_max = config.getfloat("points d'interets", "temps_ROI_max")
 amplitude_tete_de_lecture = config.getint("points d'interets", "amplitude_tete_de_lecture")
 
 
@@ -116,6 +118,11 @@ if choix_ROI:
 
 
 # conversion du temps seconde en image
+
+# Pour le ROI:
+
+temps_ROI_min = int(temps_ROI_min * framerate)
+temps_ROI_max = int(temps_ROI_max * framerate)
 
 # Pour le cadre:
 
