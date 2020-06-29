@@ -1,4 +1,3 @@
-
 from random import randint
 from preparation_video import *
 
@@ -108,9 +107,6 @@ else:
     sens_deplacement_y = 1
     direction_deplacement_y = 1
 
-"""postion réelle en float permet d'actualiser plus régulièrement le déplacement pour avoir une vidéo plus fluide"""
-pos_x_reel = posX
-pos_y_reel = posY
 
 """permet de savoir si le bord est atteint:"""
 bord_atteint_x = posX== size_window_x//2 + size_window_x%2 -1 or posX== limite_up_x - size_window_x//2

@@ -44,12 +44,7 @@ clock = pygame.time.Clock()
 
 while running:
 
-    posydebut=posY
-
     clock.tick(framerate)
-
-
-
 
 
     for event in pygame.event.get():
@@ -134,8 +129,10 @@ while running:
     size_window_y=int(size_y/Zt)
 
     #deplacement cadre:
-    vitesse_y_debut=vitesse_actuelle_y
+    
     if choix_cadre:
+
+        # Déplacement manuel:
         if type_deplacement_cadre:
             arret_x,arret_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y= \
                 deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_actuelle_x, posY,
@@ -145,12 +142,12 @@ while running:
             indice_vitesse_x, indice_vitesse_y, vitesse_initiale_x, vitesse_initiale_y,\
                     chgmt_vitesse_x_en_cours, chgmt_vitesse_y_en_cours = chgmt_indice_vitesse_manuel(indice_vitesse_x, indice_vitesse_y, vitesse_x, vitesse_y, chgmt_vitesse_x_en_cours, chgmt_vitesse_y_en_cours, keys, input_map, vitesse_initiale_x, vitesse_initiale_y)
             
-
+        # Déplacement automatique:
         else:
             if not arret_x:
-                posX, pos_x_reel, sens_deplacement_x, direction_deplacement_x, bord_atteint_x, \
+                posX, sens_deplacement_x, direction_deplacement_x, bord_atteint_x, \
                 bord_atteint_x_debut, temps_restant_bord_x, debut_bord_x, temps_x_changement = deplacement_automatique_x_y(
-                     posX, pos_x_reel, sens_deplacement_x, direction_deplacement_x, vitesse_actuelle_x, limite_up_x,
+                     posX, sens_deplacement_x, direction_deplacement_x, vitesse_actuelle_x, limite_up_x,
                     size_window_x, bord_atteint_x, bord_atteint_x_debut, debut_bord_x, temps_restant_bord_x,
                     temps_min_x, temps_max_x, temps_min_changement_x, probabilite_changement_sens_x,
                     probabilite_changement_selon_direction_x, temps_x_changement,compteur_de_frame)
@@ -169,9 +166,9 @@ while running:
                         nb_frame_incrementation_vitesse_x = temps_changement_vitesse_x // diff_vitesse_x
 
             if not arret_y:
-                posY, pos_y_reel,  sens_deplacement_y, direction_deplacement_y, bord_atteint_y, \
+                posY, sens_deplacement_y, direction_deplacement_y, bord_atteint_y, \
                 bord_atteint_y_debut, temps_restant_bord_y, debut_bord_y, temps_y_changement = deplacement_automatique_x_y(
-                     posY, pos_y_reel, sens_deplacement_y, direction_deplacement_y, vitesse_actuelle_y, limite_up_y,
+                     posY, sens_deplacement_y, direction_deplacement_y, vitesse_actuelle_y, limite_up_y,
                     size_window_y, bord_atteint_y, bord_atteint_y_debut, debut_bord_y, temps_restant_bord_y,
                     temps_min_y, temps_max_y, temps_min_changement_y, probabilite_changement_sens_y,
                     probabilite_changement_selon_direction_y, temps_y_changement,compteur_de_frame)
@@ -247,8 +244,6 @@ while running:
     else:
         screen.blit(frame, (0, 0))
 
-    if abs(posY-posydebut)>0 and abs(posY-posydebut)!=vitesse_y_debut:
-        print(posY,posydebut,vitesse_y_debut)
     pygame.display.update()
     compteur_de_frame+=1
 
