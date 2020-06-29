@@ -134,9 +134,9 @@ while running:
 
         # Déplacement manuel:
         if type_deplacement_cadre:
-            arret_x,arret_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y= \
+            arret_x,arret_y, posX, sens_deplacement_x, bord_atteint_x, posY, sens_deplacement_y, bord_atteint_y= \
                 deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_actuelle_x, posY,
-                                   sens_deplacement_y, limite_up_y, size_window_y, vitesse_actuelle_y, pos_x_reel, pos_y_reel, keys,
+                                   sens_deplacement_y, limite_up_y, size_window_y, vitesse_actuelle_y, keys,
                                    input_map)
 
             indice_vitesse_x, indice_vitesse_y, vitesse_initiale_x, vitesse_initiale_y,\
