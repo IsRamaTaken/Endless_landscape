@@ -44,7 +44,7 @@ clock = pygame.time.Clock()
 
 while running:
 
-    posydebut=pos_y_reel
+    posydebut=posY
 
     clock.tick(framerate)
 
@@ -134,6 +134,7 @@ while running:
     size_window_y=int(size_y/Zt)
 
     #deplacement cadre:
+    vitesse_y_debut=vitesse_actuelle_y
     if choix_cadre:
         if type_deplacement_cadre:
             arret_x,arret_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y= \
@@ -246,6 +247,8 @@ while running:
     else:
         screen.blit(frame, (0, 0))
 
+    if abs(posY-posydebut)>0 and abs(posY-posydebut)!=vitesse_y_debut:
+        print(posY,posydebut,vitesse_y_debut)
     pygame.display.update()
     compteur_de_frame+=1
 
