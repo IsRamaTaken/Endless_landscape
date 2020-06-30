@@ -13,6 +13,7 @@ def face_tracking_formating(fichier_input, fichier_output, nb_PI, intervalle=20)
 
     f = open(fichier_input, 'r')
     texte = f.readlines()
+    f.close()
     prec = -1
     iteration = 0
     for ligne in texte:
@@ -32,7 +33,7 @@ def face_tracking_formating(fichier_input, fichier_output, nb_PI, intervalle=20)
             if point[0] != prec + 1:
                 liste_ID_PI = selection_PI(liste_point, nb_PI)
                 liste_point.sort(key=lambda point:point[0])
-                liste_PI = [ [liste_point[i][1:-1]] for i in liste_ID_PI ]
+                dict_PI = {"PI_"+str(i): [tuple(liste_point[liste_ID_PI[i]][1:-1])] for i in range(len(liste_ID_PI)) }
 
                 iteration += 1
             else:
@@ -42,13 +43,13 @@ def face_tracking_formating(fichier_input, fichier_output, nb_PI, intervalle=20)
             if point[0] in liste_ID_PI:
                 for i in range(len(liste_ID_PI)):
                     if liste_ID_PI[i] == point[0]:
-                        liste_PI[i].append(point[1:-1])
+                        dict_PI["PI_"+str(i)].append(tuple(point[1:-1]))
             if point[0] != prec + 1:
                 iteration += 1
 
         prec = point[0]
 
-    return liste_PI
+    return dict_PI
 
 
 def selection_PI(liste_PI, nb_PI):
@@ -75,20 +76,46 @@ def remplissage_PI(PI):
 
         diff_x = PI[indice+1][1] - PI[indice][1]
         diff_y = PI[indice+1][2] - PI[indice][2]
-
+        
+        if diff_x != 0:
+            nb_img_saut_x = (nb_ajout // abs(diff_x)) + 1
+        else:
+            nb_img_saut_x = nb_ajout + 1
+        if diff_y != 0:
+            nb_img_saut_y = (nb_ajout // abs(diff_y)) + 1
+        else:
+            nb_img_saut_y = nb_ajout + 1
+        
         avancement_x = signe(diff_x) * (abs(diff_x) // nb_ajout)
         avancement_y = signe(diff_y) * (abs(diff_y) // nb_ajout)
+        
+        if avancement_x == 0 and diff_x != 0:
+            avancement_x = signe(diff_x)
+        if avancement_y == 0 and diff_y != 0:
+            avancement_y = signe(diff_y)
 
         for i in range(nb_ajout):
-            PI.append([lecture+i+1, PI[indice][1] + (i+1)*avancement_x, PI[indice][2] + (i+1)*avancement_y])
-        PI.sort(key=lambda point:point[0])
+            point = [lecture + i + 1, PI[indice+i][1], PI[indice+i][2]]
+            
+            if (i + 1)  % nb_img_saut_x == 0:
+                point[1] += avancement_x
+            if (i + 1) % nb_img_saut_y == 0:
+                point[2] += avancement_y
+
+            PI.append(tuple(point))
+
+            PI.sort(key=lambda point:point[0])
         indice += nb_ajout + 1
         lecture = PI[indice][0]
-
     
     return PI
 
 
-print(remplissage_PI([[1,0,0],[21,20,20],[41,0,0]]))
+def  remplissage_dict_PI(dict_PI):
+    for PI in dict_PI:
+        dict_PI[PI] = remplissage_PI(dict_PI[PI])
+    return dict_PI
 
-print(remplissage_PI(face_tracking_formating("PI.txt", "u", 5)[0]))
+
+print(remplissage_dict_PI(face_tracking_formating("PI.txt", "u", 5)))
+
