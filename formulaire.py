@@ -1,5 +1,14 @@
-from tkinter import Tk, Label,StringVar,Entry,Button,font,Checkbutton, BooleanVar
+from tkinter import *
+import tkinter
+from PIL import Image,ImageTk
+from initialisation_parametres import *
 
+
+pygame.quit()
+
+listeFrame2=[] # liste des frame au format image
+
+#on transforme les numpy array en image
 
 
 def quit():
@@ -8,85 +17,104 @@ def quit():
     Validation.grid(row=0,column=0,rowspan=7,columnspan=2)
 
 
-class FormulaireSelect:
 
-    def __init__(self,texte,position,fenetre,action,selectDefault):
-        self.position=position
-        self.texte=texte
-        self.fenetre=fenetre
-        self.action=action
-        self.selectDefault = selectDefault
-        is_checked=BooleanVar(self.fenetre,str(selectDefault))
-        self.descip=Label(self.fenetre,text=self.texte)
-        self.select=Checkbutton(self.fenetre,variable=is_checked,command=self.action)
+def ajoutElementList(*args):
+    global ListeInteret
+    if ptinteret.get()=='+':
 
-
-    def postionner(self):
-        self.select.grid(row=self.position,column=2)
-        self.descip.grid(row=self.position,column=3)
-
-class TitrePartie:
-    def __init__(self,texte,position,fenetre):
-        self.texte=texte
-        self.position=position
-        self.fenetre=fenetre
-        self.titre=Label(self.fenetre,text=texte)
-
-    def positionner(self):
-        self.titre.grid(row=self.position,column=0)
+        OptionList[-1]="Point d'intérêt "+str(len(OptionList))
+        ListeInteret[OptionList[-1]]=[]
+        OptionList.append('+')
+        ptinteret.set(OptionList[-2])
+        global opt
+        opt.destroy()
+        opt = OptionMenu(app, ptinteret, *OptionList)
+        opt.config(font=('Helvetica', 12))
+        opt.grid(row=0,column=7)
 
 
-class FormulaireRemplir:
+def ajoutPosition(event):
+    global ListeInteret
+    ListeInteret[ptinteret.get()].append((Frame.get()-1,event.x,event.y))
 
-    def __init__(self,texte,position,fenetre,variableDefault):
-        self.texte=texte
-        self.position=position
-        self.fenetre=fenetre
-        self.variableDefault=variableDefault
-        self.descrip=Label(fenetre,text=self.texte,pady=5,padx=5)
-        text = StringVar(self.fenetre)
-        text.set(str(self.variableDefault))
-        self.rempli=Entry(fenetre, textvariable=text)
-
-
-    def positionner(self):
-        self.descrip.grid(row=self.position,column=0)
-        self.rempli.grid(row=self.position,column=1)
-
-    def getVar(self):
-        return self.rempli.get()
+    Info.configure(text=ptinteret.get() +' : ajout de la position '+ str((Frame.get()-1,event.x,event.y)))
 
 
 
-#style
+def deplacementLecture (deplacement):
+    def deplace (*args):
+        Info.configure(text='')
+        if  Frame.get()+deplacement<=len(listeFrame2) and Frame.get()+deplacement>=1:
+            Frame.set(Frame.get()+deplacement)
+            diapo.create_image(0,0,image=listeFrame2[Frame.get()-1],anchor=tkinter.NW)
+    return deplace
+
+#Initialisation des paramètres
+ListeInteret={}
+ListeInteret["Point d'intérêt 1"]=[]
+
+OptionList = [
+"Point d'intérêt 1",
+'+'
+]
+
+app = Tk()
 
 
-formulaire=Tk()
-formulaire.title('Endless landscape')
-Titre=Label(formulaire,text='Configuration de la vidéo',bd=10)
-Titre.grid(row=0,column=0,columnspan=2)
+#Conversion des images au format PIL TK pour pouvoir les afficher dans la fenêtre
 
-VideoTitre=TitrePartie("Paramètres Vidéo",1,formulaire)
-Video=FormulaireRemplir("Video",2,formulaire,'Manif.mp4')
-FPS=FormulaireRemplir("Nombre d'images par seconde",2,formulaire,30)
-CadreX=FormulaireRemplir("Largeur du cadre en pixels",3,formulaire,600)
-CadreY=FormulaireRemplir("Hauteur du cadre en pixels",4,formulaire,900)
-VitesseCadreX=FormulaireRemplir("Vitesse de déplacement selon x en pixels par seconde",5,formulaire,30)
-VitesseCadreY=FormulaireRemplir("Vitesse de déplacement selon y en pixels par seconde",6,formulaire,30)
+for i in range(len(frame_list)):
 
-VideoTitre.positionner()
-Video.positionner()
-FPS.positionner()
-CadreX.positionner()
-CadreY.positionner()
-VitesseCadreX.positionner()
-VitesseCadreY.positionner()
+    a=cv2.resize(frame_list[i],(limite_up_x//2,limite_up_y//2))
+    a = cv2.cvtColor(a, cv2.COLOR_BGR2RGB)
+    b=Image.fromarray(a)
+    b=ImageTk.PhotoImage(b)
+    listeFrame2.append(b)
 
 
-AffichageProb=Label(formulaire,textvariable='')
-AffichageProb.grid(row=7,column=0,columnspan=2)
-Enter= Button(formulaire,text='Enter',command=quit)
-Enter.grid(row=8,column=0,columnspan=2)
-Validation=Label(formulaire,text='Merci')
+#Création des variables
+Frame=IntVar(app)
+Frame.set(1)
+ptinteret = StringVar(app)
+ptinteret.set(OptionList[0])
 
-formulaire.mainloop()
+
+
+#Création des affichages
+
+#Diaporama
+diapo = Canvas(app, width = limite_up_x//2, height = limite_up_y//2)
+diapo.create_image(0,0,image=listeFrame2[Frame.get()-1],anchor=tkinter.NW)
+
+#Menu déroulant
+opt = OptionMenu(app, ptinteret, *OptionList)
+opt.config(font=('Helvetica', 12))
+
+#Player Video
+avanceImage=Button(app,text='>',command=deplacementLecture(1))
+avanceImageRapide=Button(app,text='>>',command=deplacementLecture(5))
+reculImage=Button(app,text='<',command=deplacementLecture(-1))
+reculImageRapide=Button(app,text='<<',command=deplacementLecture(-5))
+
+#Afficheur de message
+Info=Label(app)
+
+
+#Gestion des events
+
+ptinteret.trace("w", ajoutElementList)
+diapo.bind('<Button-1>',ajoutPosition)
+
+
+
+#Placement des objets
+diapo.grid(row=0,column=0,columnspan=6)
+opt.grid(row=0,column=7)
+avanceImage.grid(row=1,column=4,padx=60)
+avanceImageRapide.grid(row=1,column=5,padx=60)
+reculImage.grid(row=1,column=2,padx=60)
+reculImageRapide.grid(row=1,column=1,padx=60)
+Info.grid(row=1,column=3)
+
+app.mainloop()
+print(ListeInteret)
