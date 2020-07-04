@@ -3,6 +3,7 @@ import tkinter
 from PIL import Image,ImageTk
 from initialisation_parametres import *
 import numpy as np
+import json
 
 
 pygame.quit()
@@ -12,9 +13,7 @@ listeFrame2=[] # liste des frame au format image
 #on transforme les numpy array en image
 
 def quit():
-    global formulaire
-    global Validation
-    Validation.grid(row=0,column=0,rowspan=7,columnspan=2)
+    app.quit()
 
 
 def chercher(liste,frame):
@@ -80,11 +79,31 @@ def changementPtinteret(*args):
         b = Image.fromarray(a)
         b = ImageTk.PhotoImage(b)
         listeFrame2[i]=b
-        del a
-        del b
+
     diapo.itemconfig(imagediapo, image=listeFrame2[Frame.get() - 1])
 
-
+def Charger(*args):
+    global ListeInteret
+    with open("points d'intérêt.txt","r") as f:
+        ListeInteret=json.load(f)
+    #modification du menu déroulant
+    OptionList=list(ListeInteret.keys())
+    OptionList.append("+")
+    ptinteret.set(OptionList[0])
+    global opt
+    opt.destroy()
+    opt = OptionMenu(app, ptinteret, *OptionList)
+    opt.config(font=('Helvetica', 12))
+    opt.grid(row=0, column=11)
+    #modification des images
+    for i in range(len(frame_list)):
+        a = cv2.resize(frame_list[i], (limite_up_x // 2, limite_up_y // 2))
+        a = ajout_position(ListeInteret[ptinteret.get()], i, a)
+        a = cv2.cvtColor(a, cv2.COLOR_BGR2RGB)
+        b = Image.fromarray(a)
+        b = ImageTk.PhotoImage(b)
+        listeFrame2[i]=b
+    diapo.itemconfig(imagediapo, image=listeFrame2[Frame.get() - 1])
 
 
 
@@ -95,6 +114,10 @@ def deplacementLecture (deplacement):
             Frame.set(Frame.get()+deplacement)
             diapo.itemconfigure(imagediapo,image=listeFrame2[Frame.get()-1])
     return deplace
+
+def Enregistrer(*args):
+    with open("points d'intérêt.txt","w") as f:
+        json.dump(ListeInteret,f)
 
 #Initialisation des paramètres
 ListeInteret={}
@@ -149,10 +172,11 @@ reculImageRapide=Button(app,text='<<',command=deplacementLecture(-5),font=('Helv
 Info=Label(app)
 
 #options
-Supprimer=Button(app, text='Supprimer le point d''interet',font=('Helvetica', 12))
-Fixer=Button(app, text='Fixer le point d''intérêt',font=('Helvetica', 12))
-Chargement=Button(app, text='Charger les points d''intérêts',font=('Helvetica', 12))
-Sauvegarder=Button(app, text='Saugarder les points d''intérêts',font=('Helvetica', 12))
+Supprimer=Button(app, text="Supprimer le point d'interet",font=('Helvetica', 12))
+Fixer=Button(app, text="Fixer le point d'intérêt",font=('Helvetica', 12))
+Chargement=Button(app, text="Charger les points d'intérêts",font=('Helvetica', 12))
+Sauvegarder=Button(app, text="Saugarder les points d'intérêts",font=('Helvetica', 12))
+Valider=Button(app, text="Valider",font=('Helvetica', 12))
 
 
 
@@ -161,6 +185,9 @@ Sauvegarder=Button(app, text='Saugarder les points d''intérêts',font=('Helveti
 ptinteret.trace("w", changementPtinteret)
 diapo.bind('<Button-1>',AfficherPosition)
 Supprimer.configure(command=supprimerPoint)
+Chargement.configure(command=Charger)
+Sauvegarder.configure(command=Enregistrer)
+Valider.configure(command=quit)
 
 
 
@@ -176,7 +203,7 @@ Supprimer.grid(row=2,column=0)
 Fixer.grid(row=2,column=1)
 Chargement.grid(row=2,column=2)
 Sauvegarder.grid(row=2,column=3)
-
+Valider.grid(row=2,column=4)
 app.mainloop()
 print(ListeInteret)
 del listeFrame2
