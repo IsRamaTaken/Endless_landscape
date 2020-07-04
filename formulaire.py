@@ -11,13 +11,17 @@ listeFrame2=[] # liste des frame au format image
 
 #on transforme les numpy array en image
 
-
 def quit():
     global formulaire
     global Validation
     Validation.grid(row=0,column=0,rowspan=7,columnspan=2)
-    
 
+
+def chercher(liste,frame):
+    for i in range (len(liste)):
+        if liste[i][0]==frame:
+            return i
+    return
 
 def ajout_position(listPos,frame,image):
     for i in range (len(listPos)):
@@ -25,23 +29,35 @@ def ajout_position(listPos,frame,image):
             image[listPos[i][2]-1:listPos[i][2]+2,listPos[i][1]-1:listPos[i][1]+2]=np.array([[[0,0,255],[0,0,255],[0,0,255]],[[0,0,255],[0,0,255],[0,0,255]],[[0,0,255],[0,0,255],[0,0,255]]])
     return image
 
-def supprimerDernierPoint(*args):
-    print('salut')
-    A=ListeInteret[ptinteret.get()]
-    for i in range(len(A)):
-        if A[len(A)-1-i][0]==Frame.get():
-            ListeInteret.pop(i)
-            a = cv2.resize(frame_list[i], (limite_up_x // 2, limite_up_y // 2))
-            a = ajout_position(ListeInteret[ptinteret.get()], i, a)
-            a = cv2.cvtColor(a, cv2.COLOR_BGR2RGB)
-            b = Image.fromarray(a)
-            b = ImageTk.PhotoImage(b)
-            listeFrame2[i] = b
-            del a
-            del b
-            diapo.itemconfig(imagediapo, image=listeFrame2[Frame.get() - 1])
-            print('salut')
-            return
+def AfficherPosition(event):
+    global ListeInteret
+    a=chercher(ListeInteret[ptinteret.get()],Frame.get()-1)
+
+    if a!=None:
+        ListeInteret[ptinteret.get()][a]=(Frame.get()-1,event.x,event.y)
+
+    else:
+        ListeInteret[ptinteret.get()].append((Frame.get()-1,event.x,event.y))
+
+    A=frame_list[Frame.get()-1]
+    A=cv2.resize(A,(limite_up_x//2,limite_up_y//2))
+    A=ajout_position(ListeInteret[ptinteret.get()],Frame.get()-1,A)
+    A = cv2.cvtColor(A, cv2.COLOR_BGR2RGB)
+    listeFrame2[Frame.get()-1]=ImageTk.PhotoImage(Image.fromarray(A))
+
+    diapo.itemconfig(imagediapo,image=listeFrame2[Frame.get()-1])
+    del A , a
+
+def supprimerPoint(*args):
+    a= chercher(ListeInteret[ptinteret.get()],Frame.get()-1)
+    if a!= None:
+        ListeInteret[ptinteret.get()].pop(a)
+        A = frame_list[a]
+        A = cv2.resize(A, (limite_up_x // 2, limite_up_y // 2))
+        A = cv2.cvtColor(A, cv2.COLOR_BGR2RGB)
+        listeFrame2[Frame.get() - 1] = ImageTk.PhotoImage(Image.fromarray(A))
+        diapo.itemconfig(imagediapo, image=listeFrame2[Frame.get() - 1])
+
 
 def ajoutElementList(*args):
     OptionList[-1]="Point d'intérêt "+str(len(OptionList))
@@ -69,22 +85,6 @@ def changementPtinteret(*args):
     diapo.itemconfig(imagediapo, image=listeFrame2[Frame.get() - 1])
 
 
-
-
-
-
-def ajoutPosition(event):
-    global ListeInteret
-    ListeInteret[ptinteret.get()].append((Frame.get()-1,event.x,event.y))
-    A=frame_list[Frame.get()-1]
-    A=cv2.resize(A,(limite_up_x//2,limite_up_y//2))
-    A=ajout_position(ListeInteret[ptinteret.get()],Frame.get()-1,A)
-    A = cv2.cvtColor(A, cv2.COLOR_BGR2RGB)
-    listeFrame2[Frame.get()-1]=ImageTk.PhotoImage(Image.fromarray(A))
-
-    diapo.itemconfig(imagediapo,image=listeFrame2[Frame.get()-1])
-    del A
-    Info.configure(text=ptinteret.get() +' : ajout de la position '+ str((Frame.get()-1,event.x,event.y)))
 
 
 
@@ -159,8 +159,8 @@ Sauvegarder=Button(app, text='Saugarder les points d''intérêts',font=('Helveti
 #Gestion des events
 
 ptinteret.trace("w", changementPtinteret)
-diapo.bind('<Button-1>',ajoutPosition)
-Supprimer.configure(command=supprimerDernierPoint)
+diapo.bind('<Button-1>',AfficherPosition)
+Supprimer.configure(command=supprimerPoint)
 
 
 
@@ -178,4 +178,5 @@ Chargement.grid(row=2,column=2)
 Sauvegarder.grid(row=2,column=3)
 
 app.mainloop()
+print(ListeInteret)
 del listeFrame2
