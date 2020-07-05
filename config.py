@@ -83,6 +83,9 @@ framerate = config.getint("output_video", "framerate")
 fullscreen = config.getboolean("output_video", "fullscreen")
 sens = config.getint("output_video", "sens")
 
+#mode ROI
+ROI = config.getboolean("MODE","ROI")
+
 #Pour les inputs clavier:
 
 key_config = configparser.ConfigParser(allow_no_value=True)
@@ -137,4 +140,5 @@ attente_max *= framerate
 #Pour la tete de lecture:
 
 nb_frame_min_changement_lecture = int(temps_min_changement_t * framerate)
+
 

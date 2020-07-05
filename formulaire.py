@@ -6,14 +6,15 @@ import numpy as np
 import json
 
 
-pygame.quit()
+
 
 listeFrame2=[] # liste des frame au format image
 
 #on transforme les numpy array en image
 
 def quit():
-    app.quit()
+    global app
+    app.destroy()
 
 
 def chercher(liste,frame):
@@ -204,6 +205,4 @@ Fixer.grid(row=2,column=1)
 Chargement.grid(row=2,column=2)
 Sauvegarder.grid(row=2,column=3)
 Valider.grid(row=2,column=4)
-app.mainloop()
-print(ListeInteret)
-del listeFrame2
+
