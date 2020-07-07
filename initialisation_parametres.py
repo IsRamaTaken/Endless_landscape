@@ -6,18 +6,43 @@ from preparation_video import *
 lecture = randint(0, nombre_de_frame-1)
 indice_proba = 0
 
+
+""" Initialisation des paramètres de la vitesse de déplacement du cadre """
+
 # Initialisation de l'indice de la vitesse de  déplacement du cadre:
 
 indice_vitesse_x = randint(0, len(vitesse_x)-1)
 indice_vitesse_y = randint(0, len(vitesse_y)-1)
 
-# Initialisation des vitesses actuelles en x et y:
+# Initialisation des vitesses actuelles et initiales en x et y:
 vitesse_actuelle_x = vitesse_x[indice_vitesse_x]
 vitesse_actuelle_y = vitesse_y[indice_vitesse_y]
+vitesse_initiale_x = vitesse_actuelle_x
+vitesse_initiale_y = vitesse_actuelle_y
 
 # Initialisation du temps entre chaque changement de vitesse :
 temps_chgmt_indice_x = 0
 temps_chgmt_indice_y = 0
+
+# Initialisation des variables de suivi du changement de vitesse
+chgmt_vitesse_x_en_cours = False
+chgmt_vitesse_y_en_cours = False
+
+# Initialisation des premières frames pour le changement de vitesse
+frame_chgmt_x = 0
+frame_chgmt_y = 0
+
+# Initialisation des valeurs du nombre de frame toute les combiens il faut incrémenter la valeur de 
+# la vitesse de déplacement du cadre lors d'un changement de vitesse (pour un changement progressif)
+
+nb_frame_incrementation_vitesse_x = 1
+nb_frame_incrementation_vitesse_y = 1
+
+diff_vitesse_x = 0
+diff_vitesse_y = 0
+
+""" Fin de l'initialisation des paramètres de la vitesse de déplacement du cadre """
+
 
 #Initialisation de la taille de la fenêtre
 size_window_x = size_x
@@ -147,5 +172,24 @@ if sens % 2 == 1:
 else:
     accroche_x = (modes[0][0] - size_y) / 2
     accroche_y = (modes[0][1] - size_x) / 2
+
+
+""" Initialisation des paramètres relatifs au ROI """
+
+amplitude_min = 0
+amplitude_max = nombre_de_frame - 1
+
+# temps que l'on reste sur un point d'interet une fois atteint:
+temps_ROI = randint(temps_ROI_min, temps_ROI_max - 1)
+
+# numero de la frame a laquelle on a atteint un point d'interet:
+temps_ROI_arrive = 0
+
+# Variable pour indiquer si le point d'interet a été atteint et qu'on attend 
+# temps_ROI frames avant de changer
+ROI_en_attente = False
+
+""" Fin de l'initialisation du ROI"""
+
 
 """   Fin de l'initialisation   """

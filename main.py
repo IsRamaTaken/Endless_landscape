@@ -1,6 +1,6 @@
 import numpy as np
 from deplacement_tete_de_lecture import deplacement_t, changement_proba
-from cadre_manuel import deplacement_manuel
+from cadre_manuel import deplacement_manuel, chgmt_indice_vitesse_manuel
 from cadre_automatique import deplacement_automatique_x_y
 
 from zoom import *
@@ -9,14 +9,23 @@ from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
 from matplotlib import pyplot as plt
 from fonction import *
-
-
-
 from deplacement_souris import *
+from ROI import *
 
-listposX=[]
-listposY=[]
-listtemps=[]
+
+
+# ROI
+
+liste_cible = [(900,600,25), (1500,500,45)]
+lecture_cible = 25
+posXcible = 900
+posYcible = 600
+# Initialisation
+posXatteint = (posX == posXcible)
+posYatteint = (posY == posYcible)
+lecture_atteint = (lecture == lecture_cible)
+
+
 
 if sens % 2 == 0:
     screen = pygame.display.set_mode((size_y, size_x))
@@ -29,6 +38,7 @@ if fullscreen:
 
     # On déplace la souris de telle maniere a ne plus la voir:
     deplacement_souris()
+
 pygame.key.set_repeat(100, 100)
 
 running = True
@@ -37,10 +47,6 @@ running = True
 """   Début de la boucle infini de choix d'image et d'affichage   """
 
 clock = pygame.time.Clock()
-
-#plt.ion()
-#plt.title('trajectoire du cadre')
-
 
 
 while running:
@@ -138,9 +144,13 @@ while running:
     if choix_cadre:
         if type_deplacement_cadre:
             arret_x,arret_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y= \
-                deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_x, posY,
-                                   sens_deplacement_y, limite_up_y, size_window_y, vitesse_y, pos_x_reel, pos_y_reel, keys,
+                deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_actuelle_x, posY,
+                                   sens_deplacement_y, limite_up_y, size_window_y, vitesse_actuelle_y, pos_x_reel, pos_y_reel, keys,
                                    input_map)
+
+            indice_vitesse_x, indice_vitesse_y, vitesse_initiale_x, vitesse_initiale_y,\
+                    chgmt_vitesse_x_en_cours, chgmt_vitesse_y_en_cours = chgmt_indice_vitesse_manuel(indice_vitesse_x, indice_vitesse_y, vitesse_x, vitesse_y, chgmt_vitesse_x_en_cours, chgmt_vitesse_y_en_cours, keys, input_map, vitesse_initiale_x, vitesse_initiale_y)
+            
 
         else:
             if not arret_x:
@@ -152,10 +162,17 @@ while running:
                     probabilite_changement_selon_direction_x, temps_x_changement,compteur_de_frame)
                 
                 
-                indice_vitesse_x, temps_chgmt_indice_x = changement_proba(
-                        temps_chgmt_indice_x, temps_min_chgmt_vitesse_x, indice_vitesse_x, vitesse_x,compteur_de_frame)
-                vitesse_actuelle_x = vitesse_x[indice_vitesse_x]
-
+                if not chgmt_vitesse_x_en_cours:
+                    indice_vitesse_x, temps_chgmt_indice_x = changement_proba(
+                            temps_chgmt_indice_x, temps_min_chgmt_vitesse_x, indice_vitesse_x, vitesse_x,compteur_de_frame)
+                    
+                    if vitesse_x[indice_vitesse_x] != vitesse_actuelle_x:
+                        chgmt_vitesse_x_en_cours = True
+                        temps_chgmt_indice_x += temps_changement_vitesse_x
+                        vitesse_initiale_x = vitesse_actuelle_x
+                        frame_chgmt_x = compteur_de_frame
+                        diff_vitesse_x = abs( vitesse_x[indice_vitesse_x] - vitesse_initiale_x)
+                        nb_frame_incrementation_vitesse_x = temps_changement_vitesse_x // diff_vitesse_x
 
             if not arret_y:
                 posY, pos_y_reel,  sens_deplacement_y, direction_deplacement_y, bord_atteint_y, \
@@ -166,19 +183,36 @@ while running:
                     probabilite_changement_selon_direction_y, temps_y_changement,compteur_de_frame)
 
 
-                indice_vitesse_y, temps_chgmt_indice_y = changement_proba(
-                        temps_chgmt_indice_y, temps_min_chgmt_vitesse_y, indice_vitesse_y, vitesse_y,compteur_de_frame)
-                vitesse_actuelle_y = vitesse_y[indice_vitesse_y]           
+                if not chgmt_vitesse_y_en_cours:
+                    indice_vitesse_y, temps_chgmt_indice_y = changement_proba(
+                            temps_chgmt_indice_y, temps_min_chgmt_vitesse_y, indice_vitesse_y, vitesse_y,compteur_de_frame)
+
+                    
+                    if vitesse_y[indice_vitesse_y] != vitesse_actuelle_y:
+                        temps_chgmt_indice_y += temps_changement_vitesse_y
+                        chgmt_vitesse_y_en_cours =  True
+                        vitesse_initiale_y = vitesse_actuelle_y
+                        frame_chgmt_y = compteur_de_frame
+                        diff_vitesse_y = abs( vitesse_y[indice_vitesse_y] - vitesse_initiale_y)
+                        nb_frame_incrementation_vitesse_y = temps_changement_vitesse_y // diff_vitesse_y
+                           
+        if chgmt_vitesse_x_en_cours:
+                vitesse_actuelle_x, chgmt_vitesse_x_en_cours = chgmt_vitesse(vitesse_actuelle_x, vitesse_x,\
+                    indice_vitesse_x, chgmt_vitesse_x_en_cours, temps_changement_vitesse_x, vitesse_initiale_x, frame_chgmt_x, compteur_de_frame, nb_frame_incrementation_vitesse_x)
+
+
+        if chgmt_vitesse_y_en_cours:
+            vitesse_actuelle_y, chgmt_vitesse_y_en_cours = chgmt_vitesse(vitesse_actuelle_y, vitesse_y,\
+                   indice_vitesse_y, chgmt_vitesse_y_en_cours, temps_changement_vitesse_y, vitesse_initiale_y, frame_chgmt_y, compteur_de_frame, nb_frame_incrementation_vitesse_y)
 
 
 
-    print(vitesse_actuelle_x, vitesse_actuelle_y)
-
+    """ Déplacement de la tete de lecture"""
 
     if choix_t:
         if not type_deplacement_tete:
             lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
-                    frame_lecture, lecture, direction_lecture, nombre_de_frame, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame)
+                    frame_lecture, lecture, direction_lecture, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, 0, nombre_de_frame - 1)
             indice_proba, temps_changement_proba = changement_proba(
                 temps_changement_proba, temps_entre_changement_proba, indice_proba, liste_proba,compteur_de_frame)
 
@@ -195,10 +229,75 @@ while running:
             lecture = nombre_de_frame - 1
             sens_lecture = -1
             direction_lecture = -1
+
+    # Déplacement de la tete de lecture et du cadre dans le cas du déplacement vers les points d'interets:
+    if choix_ROI:
+
         
+        if not posXatteint and not ROI_en_attente:
+            posX += deplacement_vers(posX, posXcible) * vitesse_actuelle_x
+            if abs(posX - posXcible) <= vitesse_actuelle_x:
+                posX = posXcible
+            posXatteint = (posX == posXcible)
+
+        if not posYatteint and not ROI_en_attente:
+            posY += deplacement_vers(posY, posYcible) * vitesse_actuelle_y
+            if abs(posY - posYcible) <= vitesse_actuelle_y:
+                posY = posYcible
+
+            posYatteint = (posY == posYcible)
 
 
 
+
+
+        if not lecture_atteint and not ROI_en_attente: # Tant qu'on a pas atteint la lecture ciblée
+            lecture += deplacement_vers(lecture, lecture_cible)
+            lecture_atteint = (lecture == lecture_cible)
+            if lecture_atteint:
+                amplitude_min = max(0, lecture_cible - amplitude_tete_de_lecture)
+                amplitude_max = min(nombre_de_frame - 1, lecture_cible + amplitude_tete_de_lecture)
+                print("lecture cible", lecture, "amplitude min : ", amplitude_min, "amplitude max : ", amplitude_max)
+
+
+        if lecture_atteint or ROI_en_attente: # Quand on atteint la lecture cible, on tourne autours
+            
+            lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
+                    frame_lecture, lecture, direction_lecture, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, amplitude_min, amplitude_max)
+            
+            lecture += sens_lecture
+            if lecture <= amplitude_min:
+                lecture = amplitude_min
+                sens_lecture = 1
+                direction_lecture = 1
+            elif lecture >= amplitude_max:
+                lecture = amplitude_max
+                sens_lecture = -1
+                direction_lecture = -1
+        
+        # On vérifie si on vient d'atteindre le point d'interet:
+        if lecture_atteint and posXatteint and posYatteint:
+            posXcible, posYcible, lecture_cible, temps_ROI_arrive, temps_ROI, ROI_en_attente = changement_cible(liste_cible, temps_ROI, temps_ROI_min, temps_ROI_max, compteur_de_frame)
+            
+            lecture_atteint = (lecture == lecture_cible)
+            posXatteint = (posX == posXcible)
+            posYatteint = (posY == posYcible)
+
+
+
+
+
+        if compteur_de_frame >= temps_ROI_arrive + temps_ROI:
+            # On a attendu suffisament longtemps
+            ROI_en_attente = False
+
+
+
+
+
+
+    print(posX, posY, lecture, lecture_cible, "ROI_en_attente", ROI_en_attente, "lecture_atteinte", lecture_atteint)
+    
 
 
 
@@ -208,8 +307,6 @@ while running:
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]
 
     img = cv2.resize(img, (size_x, size_y))
-
-    compteur_de_frame += 1
     
     """On ajoute l'image a la vidéo enregistrée si on a choisit de le faire"""
     if enregistrement:
@@ -229,19 +326,7 @@ while running:
     pygame.display.update()
     compteur_de_frame+=1
 
-    #plt.plot(posX,posY,'-o')
-
-
-
-
-
-
-
-#plt.plot(listposX,listposY,'-v')
-#plt.show()
 
 cv2.destroyAllWindows()
 pygame.quit()
-print(clock.get_fps())
-
 

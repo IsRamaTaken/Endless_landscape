@@ -22,5 +22,27 @@ def changement_proba(temps_changement_proba,temps_entre_changement_proba, indice
         indice_proba = randint(0,len(liste_proba)-1)
     return indice_proba, temps_changement_proba
 
+
+def chgmt_vitesse(vitesse_actuelle, liste_vitesse, indice_vitesse, chgmt_vitesse_en_cours, temps_changement_vitesse, vitesse_initiale, frame_chgmt, compteur_de_frame, nb, avancement=1):
+    
+    sens_deplacement = signe(liste_vitesse[indice_vitesse] - vitesse_actuelle)
+
+    if (frame_chgmt + temps_changement_vitesse - compteur_de_frame) % nb == 0:
+        vitesse_actuelle += avancement * sens_deplacement
+
+    if sens_deplacement == -1:
+        if vitesse_actuelle < liste_vitesse[indice_vitesse] - avancement:
+            vitesse_actuelle = liste_vitesse[indice_vitesse]
+            chgmt_vitesse_en_cours = False
+
+    if sens_deplacement == 1:
+        if vitesse_actuelle > liste_vitesse[indice_vitesse] - avancement:
+            vitesse_actuelle = liste_vitesse[indice_vitesse]
+            chgmt_vitesse_en_cours = False
+
+    return vitesse_actuelle, chgmt_vitesse_en_cours
+
+
 def saut_image(vitesse_x,vitesse_y,pos_xdebut,pos_ydebut,posx,posy,seuil=0.0001):
-    return ( abs(abs(pos_xdebut-posx)-vitesse_x)>seuil )or ( abs(abs(pos_ydebut-posx)-vitesse_y)>seuil )
+    return ( abs(abs(pos_xdebut-posx)-vitesse_x)>seuil )or ( abs(abs(pos_ydebut-posy)-vitesse_y)>seuil )
+
