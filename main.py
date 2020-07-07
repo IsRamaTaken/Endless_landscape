@@ -11,10 +11,31 @@ from matplotlib import pyplot as plt
 from fonction import *
 from deplacement_souris import *
 from ROI import *
-
+from formulaire import *
 
 
 # ROI
+
+ROI=True
+
+if ROI:
+    pygame.quit()
+    app.mainloop()
+    print(ListeInteret)
+    del listeFrame2
+    # Initialisation du "splash screen"
+    os.environ['SDL_VIDEO_CENTERED'] = '1'
+    pygame.init()
+    pygame.display.set_caption("endless_landscape")
+    screen = pygame.display.set_mode((350, 200), pygame.NOFRAME)
+    g_texte = pygame.font.Font('freesansbold.ttf', 30)
+    text_surf = g_texte.render("Endless Landscape", True, (255, 255, 255))
+    text_rect = text_surf.get_rect()
+    text_rect.center = (175, 75)
+    screen.blit(text_surf, text_rect)
+    pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(25, 130, 300, 10), 1)
+    pygame.display.update()
+
 
 liste_cible = [(900,600,25), (1500,500,45)]
 lecture_cible = 25
