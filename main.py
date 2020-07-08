@@ -19,13 +19,12 @@ from formulaire import *
 ROI=True
 
 if ROI:
-    pygame.quit()
+    pygame.display.quit()
     app.mainloop()
     print(ListeInteret)
     del listeFrame2
     # Initialisation du "splash screen"
     os.environ['SDL_VIDEO_CENTERED'] = '1'
-    pygame.init()
     pygame.display.set_caption("endless_landscape")
     screen = pygame.display.set_mode((350, 200), pygame.NOFRAME)
     g_texte = pygame.font.Font('freesansbold.ttf', 30)
