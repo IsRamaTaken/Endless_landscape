@@ -14,9 +14,26 @@ from ROI import *
 from formulaire import *
 
 
+""" TEMPORAIRE"""
+
+from PI_formating import *
+dict_PI = remplissage_dict_PI(face_tracking_formating("PI.txt", "u", 2))
+
+
+dict_PI = remplissage_dict_PI({"PI_0":[(1,800,800),(50,800,800)], "PI_1":[(1,600,600),(60,600,600)]})
+
+print(dict_PI)
+
+lecture_cible, posXcible, posYcible = dict_PI[indice_PI][indice_point_ds_PI]
+print(lecture_cible, posXcible, posYcible)
+"""FIN TEMPORAIRE"""
+
+
+
+
 # ROI
 
-ROI=True
+ROI=False
 
 if ROI:
     pygame.display.quit()
@@ -36,10 +53,6 @@ if ROI:
     pygame.display.update()
 
 
-liste_cible = [(900,600,25), (1500,500,45)]
-lecture_cible = 25
-posXcible = 900
-posYcible = 600
 # Initialisation
 posXatteint = (posX == posXcible)
 posYatteint = (posY == posYcible)
@@ -250,17 +263,19 @@ while running:
             sens_lecture = -1
             direction_lecture = -1
 
+
+    print("avant:",size_window_x, size_window_y)
     # Déplacement de la tete de lecture et du cadre dans le cas du déplacement vers les points d'interets:
     if choix_ROI:
 
         
-        if not posXatteint and not ROI_en_attente:
+        if not posXatteint:
             posX += deplacement_vers(posX, posXcible) * vitesse_actuelle_x
             if abs(posX - posXcible) <= vitesse_actuelle_x:
                 posX = posXcible
             posXatteint = (posX == posXcible)
 
-        if not posYatteint and not ROI_en_attente:
+        if not posYatteint:
             posY += deplacement_vers(posY, posYcible) * vitesse_actuelle_y
             if abs(posY - posYcible) <= vitesse_actuelle_y:
                 posY = posYcible
@@ -271,34 +286,45 @@ while running:
 
 
 
-        if not lecture_atteint and not ROI_en_attente: # Tant qu'on a pas atteint la lecture ciblée
+        if not lecture_atteint: # Tant qu'on a pas atteint la lecture ciblée
             lecture += deplacement_vers(lecture, lecture_cible)
+            
             lecture_atteint = (lecture == lecture_cible)
-            if lecture_atteint:
+            if lecture_atteint and premier_passage_point:
                 amplitude_min = max(0, lecture_cible - amplitude_tete_de_lecture)
                 amplitude_max = min(nombre_de_frame - 1, lecture_cible + amplitude_tete_de_lecture)
-                print("lecture cible", lecture, "amplitude min : ", amplitude_min, "amplitude max : ", amplitude_max)
 
 
-        if lecture_atteint or ROI_en_attente: # Quand on atteint la lecture cible, on tourne autours
-            
+        if lecture_atteint and premier_passage_point: # Quand on atteint la lecture cible, on tourne autours
             lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
                     frame_lecture, lecture, direction_lecture, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, amplitude_min, amplitude_max)
             
             lecture += sens_lecture
-            if lecture <= amplitude_min:
+            if lecture <= amplitude_min and premier_passage_point:
                 lecture = amplitude_min
                 sens_lecture = 1
                 direction_lecture = 1
-            elif lecture >= amplitude_max:
+            elif lecture >= amplitude_max and premier_passage_point:
                 lecture = amplitude_max
                 sens_lecture = -1
                 direction_lecture = -1
         
-        # On vérifie si on vient d'atteindre le point d'interet:
+        # On vérifie si on vient d'atteindre le point visé:
         if lecture_atteint and posXatteint and posYatteint:
-            posXcible, posYcible, lecture_cible, temps_ROI_arrive, temps_ROI, ROI_en_attente = changement_cible(liste_cible, temps_ROI, temps_ROI_min, temps_ROI_max, compteur_de_frame)
+            premier_passage_point = False
+            indice_point_ds_PI, sens_ds_pi, direction_ds_PI, frame_point_ds_PI = deplacement_t(frame_point_ds_PI, indice_point_ds_PI, direction_ds_PI, sens_ds_PI, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, 0, len(dict_PI[indice_PI]))
+           
+            indice_point_ds_PI += sens_ds_PI
+            if indice_point_ds_PI == 0:
+                sens_ds_PI = 1
+                direction_ds_PI = 1
+            elif indice_point_ds_PI == len(dict_PI[indice_PI])-1:
+                sens_ds_PI = -1
+                direction_ds_PI = -1
             
+            lecture_cible, posXcible, posYcible = dict_PI[indice_PI][indice_point_ds_PI]
+
+
             lecture_atteint = (lecture == lecture_cible)
             posXatteint = (posX == posXcible)
             posYatteint = (posY == posYcible)
@@ -308,20 +334,23 @@ while running:
 
 
         if compteur_de_frame >= temps_ROI_arrive + temps_ROI:
-            # On a attendu suffisament longtemps
-            ROI_en_attente = False
+            # On a attendu suffisament longtemps et on change de point d'interet:
+            
 
+            temps_ROI = randint(temps_ROI_min, temps_ROI_max - 1)
+            temps_ROI_arrive = compteur_de_frame
+            premier_passage_point = False
+            indice_PI = "PI_" + str(randint(0, len(dict_PI)-1))
+            indice_point_ds_PI = 0
+            print("\n\n\n\n",indice_PI)
 
+            lecture_cible, posXcible, posYcible = dict_PI[indice_PI][indice_point_ds_PI]
 
+            lecture_atteint = (lecture == lecture_cible)
+            posXatteint = (posX == posXcible)
+            posYatteint = (posY == posYcible)
 
-
-
-    print(posX, posY, lecture, lecture_cible, "ROI_en_attente", ROI_en_attente, "lecture_atteinte", lecture_atteint)
-    
-
-
-
-
+    print("apres:",size_window_x,size_window_y)
 
     img = frame_list[lecture]
     img = img[posY - size_window_y //2 + 1 - size_y % 2 :posY + size_window_y // 2, posX - size_window_x //2 +1 -size_x%2:posX + size_window_x //2 ]

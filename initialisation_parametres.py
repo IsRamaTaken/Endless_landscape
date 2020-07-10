@@ -1,4 +1,3 @@
-
 from random import randint
 from preparation_video import *
 
@@ -176,6 +175,14 @@ else:
 
 """ Initialisation des paramètres relatifs au ROI """
 
+indice_point_ds_PI = 0 # indice du point (t, x, y) dans un point d'interet
+indice_PI = "PI_0" # indice du point d'interet dans le dictionnaire des PI
+
+premier_passage_point = True
+frame_point_ds_PI = 0
+direction_ds_PI = 1
+sens_ds_PI = 1
+
 amplitude_min = 0
 amplitude_max = nombre_de_frame - 1
 
@@ -185,9 +192,6 @@ temps_ROI = randint(temps_ROI_min, temps_ROI_max - 1)
 # numero de la frame a laquelle on a atteint un point d'interet:
 temps_ROI_arrive = 0
 
-# Variable pour indiquer si le point d'interet a été atteint et qu'on attend 
-# temps_ROI frames avant de changer
-ROI_en_attente = False
 
 """ Fin de l'initialisation du ROI"""
 

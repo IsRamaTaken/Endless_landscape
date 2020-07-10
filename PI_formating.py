@@ -117,5 +117,5 @@ def  remplissage_dict_PI(dict_PI):
     return dict_PI
 
 
-print(remplissage_dict_PI(face_tracking_formating("PI.txt", "u", 5))["PI_0"])
+#print(remplissage_dict_PI(face_tracking_formating("PI.txt", "u", 5)))
 
