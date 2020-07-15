@@ -1,4 +1,4 @@
-import numpy as np
+
 from deplacement_tete_de_lecture import deplacement_t, changement_proba
 from cadre_manuel import deplacement_manuel, chgmt_indice_vitesse_manuel
 from cadre_automatique import deplacement_automatique_x_y
@@ -7,7 +7,7 @@ from zoom import *
 
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
-from matplotlib import pyplot as plt
+
 
 from fonction import *
 from deplacement_souris import *
@@ -263,15 +263,6 @@ while running:
     pygame.display.update()
     compteur_de_frame+=1
 
-    #plt.plot(posX,posY,'-o')
-
-
-
-
-
-
-#plt.plot(listposX,listposY,'-v')
-#plt.show()
 
 cv2.destroyAllWindows()
 pygame.quit()
