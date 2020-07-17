@@ -176,7 +176,7 @@ else:
 """ Initialisation des paramètres relatifs au ROI """
 
 indice_point_ds_PI = 0 # indice du point (t, x, y) dans un point d'interet
-indice_PI = "PI_0" # indice du point d'interet dans le dictionnaire des PI
+indice_PI = "Point d'intérêt 1" # indice du point d'interet dans le dictionnaire des PI
 
 premier_passage_point = True
 frame_point_ds_PI = 0

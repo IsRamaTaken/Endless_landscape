@@ -4,9 +4,9 @@ from PIL import Image,ImageTk
 from initialisation_parametres import *
 import numpy as np
 import json
+from initialisation_parametres import *
 
-
-
+pygame.display.quit()
 
 listeFrame2=[] # liste des frame au format image
 
@@ -23,6 +23,7 @@ def chercher(liste,frame):
             return i
     return
 
+
 def ajout_position(listPos,frame,image):
     for i in range (len(listPos)):
         if listPos[i][0]==frame:
@@ -30,23 +31,29 @@ def ajout_position(listPos,frame,image):
     return image
 
 def AfficherPosition(event):
-    global ListeInteret
-    a=chercher(ListeInteret[ptinteret.get()],Frame.get()-1)
 
-    if a!=None:
-        ListeInteret[ptinteret.get()][a]=(Frame.get()-1,event.x,event.y)
+    global size_y,size_x,limite_up_y,limite_up_x
+    print(event.y - size_y //4 + 1 - size_y % 2>=0 , event.y + size_y // 4<=limite_up_y//2 ,event.x - size_x //4 +1 -size_x%2>=0 , event.x + size_x //4<=limite_up_x//2)
 
-    else:
-        ListeInteret[ptinteret.get()].append((Frame.get()-1,event.x,event.y))
+    if event.y - size_y //4 + 1 - size_y % 2>=0 and event.y + size_y // 4<=limite_up_y//2 and event.x - size_x //4 +1 -size_x%2>=0 and event.x + size_x //4<=limite_up_x//2:
+        global ListeInteret
+        a=chercher(ListeInteret[ptinteret.get()],Frame.get()-1)
 
-    A=frame_list[Frame.get()-1]
-    A=cv2.resize(A,(limite_up_x//2,limite_up_y//2))
-    A=ajout_position(ListeInteret[ptinteret.get()],Frame.get()-1,A)
-    A = cv2.cvtColor(A, cv2.COLOR_BGR2RGB)
-    listeFrame2[Frame.get()-1]=ImageTk.PhotoImage(Image.fromarray(A))
+        if a!=None:
+            ListeInteret[ptinteret.get()][a]=(Frame.get()-1,event.x,event.y)
 
-    diapo.itemconfig(imagediapo,image=listeFrame2[Frame.get()-1])
-    del A , a
+        else:
+            ListeInteret[ptinteret.get()].append((Frame.get()-1,event.x,event.y))
+
+        A=frame_list[Frame.get()-1]
+        A=cv2.resize(A,(limite_up_x//2,limite_up_y//2))
+
+        A=ajout_position(ListeInteret[ptinteret.get()],Frame.get()-1,A)
+        A = cv2.cvtColor(A, cv2.COLOR_BGR2RGB)
+        listeFrame2[Frame.get()-1]=ImageTk.PhotoImage(Image.fromarray(A))
+
+        diapo.itemconfig(imagediapo,image=listeFrame2[Frame.get()-1])
+        del A , a
 
 def supprimerPoint(*args):
     a= chercher(ListeInteret[ptinteret.get()],Frame.get()-1)
@@ -87,6 +94,7 @@ def Charger(*args):
     global ListeInteret
     with open("points d'intérêt.txt","r") as f:
         ListeInteret=json.load(f)
+
     #modification du menu déroulant
     OptionList=list(ListeInteret.keys())
     OptionList.append("+")
@@ -104,6 +112,7 @@ def Charger(*args):
         b = Image.fromarray(a)
         b = ImageTk.PhotoImage(b)
         listeFrame2[i]=b
+    print(ListeInteret)
     diapo.itemconfig(imagediapo, image=listeFrame2[Frame.get() - 1])
 
 
@@ -206,3 +215,6 @@ Chargement.grid(row=2,column=2)
 Sauvegarder.grid(row=2,column=3)
 Valider.grid(row=2,column=4)
 
+
+app.mainloop()
+print(ListeInteret)

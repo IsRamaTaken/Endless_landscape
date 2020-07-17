@@ -7,10 +7,11 @@ from zoom import *
 
 from initialisation_parametres import *
 from keyboard_config_file_update import assignment_menu
+from matplotlib import pyplot as plt
 from fonction import *
 from deplacement_souris import *
 from ROI import *
-
+from formulaire import *
 
 
 """ TEMPORAIRE"""
@@ -19,12 +20,12 @@ from PI_formating import *
 dict_PI = remplissage_dict_PI(face_tracking_formating("PI.txt", "u", 2))
 
 
-#dict_PI = remplissage_dict_PI({"PI_0":[(1,800,800),(50,800,800)], "PI_1":[(1,600,600),(60,600,600)]})
+dict_PI = remplissage_dict_PI({"PI_0":[(1,800,800),(50,800,800)], "PI_1":[(1,600,600),(60,600,600)]})
 
-#print(dict_PI)
+print(dict_PI)
 
-#lecture_cible, posXcible, posYcible = dict_PI[indice_PI][indice_point_ds_PI]
-#print(lecture_cible, posXcible, posYcible)
+lecture_cible, posXcible, posYcible = dict_PI[indice_PI][indice_point_ds_PI]
+print(lecture_cible, posXcible, posYcible)
 """FIN TEMPORAIRE"""
 
 
@@ -32,16 +33,13 @@ dict_PI = remplissage_dict_PI(face_tracking_formating("PI.txt", "u", 2))
 
 # ROI
 
+ROI=True
 
-
-if choix_ROI:
-    from formulaire import *
-    for pi in ListeInteret:
-        for i in range (len(ListeInteret[pi])):
-            ListeInteret[pi][i][1]*=2
-            ListeInteret[pi][i][2] *= 2
-    lecture_cible, posXcible, posYcible = ListeInteret[indice_PI][indice_point_ds_PI]
-    print(lecture_cible, posXcible, posYcible)
+if ROI:
+    pygame.display.quit()
+    app.mainloop()
+    print(ListeInteret)
+    del listeFrame2
     # Initialisation du "splash screen"
     os.environ['SDL_VIDEO_CENTERED'] = '1'
     pygame.display.set_caption("endless_landscape")
@@ -53,7 +51,6 @@ if choix_ROI:
     screen.blit(text_surf, text_rect)
     pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(25, 130, 300, 10), 1)
     pygame.display.update()
-
 
 
 # Initialisation
@@ -87,7 +84,7 @@ clock = pygame.time.Clock()
 
 while running:
 
-    posydebut=pos_y_reel
+
 
     clock.tick(framerate)
 
@@ -135,9 +132,9 @@ while running:
         sens_deplacement_y = 0
         arret_y = True
 
-    posX_debut=posX
+
     #ZOOM
-    if choix_zoom_ou_non and not choix_ROI:
+    if choix_zoom_ou_non:
         if not type_zoom:
             # ZOOM AUTO
             if zoom_en_cours_manuel:
@@ -177,7 +174,7 @@ while running:
     size_window_y=int(size_y/Zt)
 
     #deplacement cadre:
-    if choix_cadre and not choix_ROI:
+    if choix_cadre:
         if type_deplacement_cadre:
             arret_x,arret_y, posX, pos_x_reel, sens_deplacement_x, bord_atteint_x, posY, pos_y_reel, sens_deplacement_y, bord_atteint_y= \
                 deplacement_manuel(arret_x,arret_y, posX, sens_deplacement_x, limite_up_x, size_window_x, vitesse_actuelle_x, posY,
@@ -245,7 +242,7 @@ while running:
 
     """ Déplacement de la tete de lecture"""
 
-    if choix_t and not choix_ROI:
+    if choix_t:
         if not type_deplacement_tete:
             lecture, sens_lecture, direction_lecture, frame_lecture = deplacement_t(
                     frame_lecture, lecture, direction_lecture, sens_lecture, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, 0, nombre_de_frame - 1)
@@ -267,7 +264,7 @@ while running:
             direction_lecture = -1
 
 
-
+    print("avant:",size_window_x, size_window_y)
     # Déplacement de la tete de lecture et du cadre dans le cas du déplacement vers les points d'interets:
     if choix_ROI:
 
@@ -315,17 +312,17 @@ while running:
         # On vérifie si on vient d'atteindre le point visé:
         if lecture_atteint and posXatteint and posYatteint:
             premier_passage_point = False
-            indice_point_ds_PI, sens_ds_pi, direction_ds_PI, frame_point_ds_PI = deplacement_t(frame_point_ds_PI, indice_point_ds_PI, direction_ds_PI, sens_ds_PI, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, 0, len(ListeInteret[indice_PI]))
+            indice_point_ds_PI, sens_ds_pi, direction_ds_PI, frame_point_ds_PI = deplacement_t(frame_point_ds_PI, indice_point_ds_PI, direction_ds_PI, sens_ds_PI, nb_frame_min_changement_lecture, probabilite_changement_selon_direction_t, liste_proba, indice_proba, compteur_de_frame, 0, len(dict_PI[indice_PI]))
            
             indice_point_ds_PI += sens_ds_PI
             if indice_point_ds_PI == 0:
                 sens_ds_PI = 1
                 direction_ds_PI = 1
-            elif indice_point_ds_PI == len(ListeInteret[indice_PI])-1:
+            elif indice_point_ds_PI == len(dict_PI[indice_PI])-1:
                 sens_ds_PI = -1
                 direction_ds_PI = -1
             
-            lecture_cible, posXcible, posYcible = ListeInteret[indice_PI][indice_point_ds_PI]
+            lecture_cible, posXcible, posYcible = dict_PI[indice_PI][indice_point_ds_PI]
 
 
             lecture_atteint = (lecture == lecture_cible)
@@ -343,11 +340,11 @@ while running:
             temps_ROI = randint(temps_ROI_min, temps_ROI_max - 1)
             temps_ROI_arrive = compteur_de_frame
             premier_passage_point = False
-            indice_PI = "Point d'intérêt " + str(randint(1, len(ListeInteret)-1))
+            indice_PI = "PI_" + str(randint(0, len(dict_PI)-1))
             indice_point_ds_PI = 0
             print("\n\n\n\n",indice_PI)
 
-            lecture_cible, posXcible, posYcible = ListeInteret[indice_PI][indice_point_ds_PI]
+            lecture_cible, posXcible, posYcible = dict_PI[indice_PI][indice_point_ds_PI]
 
             lecture_atteint = (lecture == lecture_cible)
             posXatteint = (posX == posXcible)
