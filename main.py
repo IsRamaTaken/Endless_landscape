@@ -53,13 +53,14 @@ if choix_ROI:
     screen.blit(text_surf, text_rect)
     pygame.draw.rect(screen, (128, 128, 128), pygame.Rect(25, 130, 300, 10), 1)
     pygame.display.update()
+    # Initialisation
+    posXatteint = (posX == posXcible)
+    posYatteint = (posY == posYcible)
+    lecture_atteint = (lecture == lecture_cible)
 
 
 
-# Initialisation
-posXatteint = (posX == posXcible)
-posYatteint = (posY == posYcible)
-lecture_atteint = (lecture == lecture_cible)
+
 
 
 
