@@ -150,14 +150,31 @@ temps_max_y = int(temps_max_y * framerate)
 temps_min_changement_x *= framerate
 temps_min_changement_y *= framerate
 
+tmin = config.getfloat("cadre", "temps_min")
+tmax = config.getfloat("cadre", "temps_max")
+
+tmin*=framerate
+tmax*=framerate
+
 temps_arret_x *=framerate
 temps_arret_y *= framerate
 
 # ZOOM
 
-vzoom /=framerate
+
 attente_min *= framerate
 attente_max *= framerate
+
+v_zoom = config.get("ZOOM", "vzoom")
+
+vzoom = v_zoom.split()
+
+
+for i in range(len(vzoom)):
+    vzoom[i] = float(vzoom[i])
+
+
+
 
 # Pour la tete de lecture:
 
